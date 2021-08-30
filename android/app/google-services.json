@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "623416835923",
+    "project_id": "served-food",
+    "storage_bucket": "served-food.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623416835923:android:ed743d7490adde11146ba6",
+        "android_client_info": {
+          "package_name": "com.example.served_food"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623416835923-6341djcu28h2kp59ovob185nso4o27kf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb8s7u8K8FYbAZ743Aq9ho26PUoYn5nEI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623416835923-6341djcu28h2kp59ovob185nso4o27kf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
