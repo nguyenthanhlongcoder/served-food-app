@@ -13,7 +13,7 @@ class HomeAppBar extends StatelessWidget {
     return Container(
       padding:
           EdgeInsets.symmetric(horizontal: kPadding, vertical: kPadding / 2),
-      color: kBtnColorStart,
+      color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -24,7 +24,7 @@ class HomeAppBar extends StatelessWidget {
                 'Home',
                 style: kBodyTextStyle.copyWith(
                     fontSize: kTitleTextSize,
-                    color: Colors.white,
+                    color: kBtnColorStart,
                     fontWeight: FontWeight.w500),
               ),
             ],

@@ -11,30 +11,34 @@ class PromotionBanner extends StatelessWidget {
   final String image;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'banner'.toUpperCase(),
-          style: kBodyTextStyle.copyWith(
-              fontSize: kSubtitleTextSize,
-              color: kTextBlackColor,
-              fontWeight: FontWeight.w500),
-        ),
-        SizedBox(
-          height: kPadding,
-        ),
-        ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          child: image != null
-              ? Image.network(
-                  image,
-                  fit: BoxFit.cover,
-                  width: Get.width,
-                )
-              : Placeholder(),
-        ),
-      ],
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(kPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'banner'.toUpperCase(),
+            style: kBodyTextStyle.copyWith(
+                fontSize: kSubtitleTextSize,
+                color: kTextBlackColor,
+                fontWeight: FontWeight.w500),
+          ),
+          SizedBox(
+            height: kPadding,
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            child: image != null
+                ? Image.network(
+                    image,
+                    fit: BoxFit.cover,
+                    width: Get.width,
+                  )
+                : Placeholder(),
+          ),
+        ],
+      ),
     );
   }
 }

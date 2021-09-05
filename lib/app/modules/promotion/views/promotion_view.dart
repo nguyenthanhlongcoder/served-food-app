@@ -16,7 +16,7 @@ class PromotionView extends GetView<PromotionController> {
     controller.updateID(Get.arguments);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           leading: BackButton(
             color: kBtnColorStart,
           ),
@@ -49,36 +49,18 @@ class PromotionView extends GetView<PromotionController> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                    child: PromotionHeader(promotion: promotion),
+                  PromotionHeader(promotion: promotion),
+                  SizedBox(
+                    height: kPadding / 2,
+                  ),
+                  Description(
+                    description: promotion.description,
                   ),
                   SizedBox(
                     height: kPadding / 2,
                   ),
-                  Divider(
-                    thickness: 1.2,
-                  ),
-                  SizedBox(
-                    height: kPadding,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                    child: Description(
-                      description: promotion.description,
-                    ),
-                  ),
-                  SizedBox(
-                    height: kPadding / 2,
-                  ),
-                  Divider(
-                    thickness: 1.2,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                    child: PromotionBanner(
-                      image: promotion.image,
-                    ),
+                  PromotionBanner(
+                    image: promotion.image,
                   )
                 ],
               );

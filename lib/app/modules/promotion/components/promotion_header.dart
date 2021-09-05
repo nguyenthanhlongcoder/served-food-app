@@ -14,28 +14,32 @@ class PromotionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        PromotionName(
-          title: promotion.name,
-        ),
-        SizedBox(height: kPadding * 2),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Time(
-              title: 'Start at',
-              time: promotion.startAt,
-            ),
-            Time(
-              title: 'End at',
-              time: promotion.endAt,
-            ),
-            SizedBox()
-          ],
-        ),
-      ],
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(kPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PromotionName(
+            title: promotion.name,
+          ),
+          SizedBox(height: kPadding * 2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Time(
+                title: 'Start at',
+                time: promotion.startAt,
+              ),
+              Time(
+                title: 'End at',
+                time: promotion.endAt,
+              ),
+              SizedBox()
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

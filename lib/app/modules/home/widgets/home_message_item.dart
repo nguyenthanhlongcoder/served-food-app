@@ -21,6 +21,7 @@ class HomeMessageItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           vertical: kPadding / 3, horizontal: kPadding / 2),
       decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(
             color: borderColor ?? kBtnColorStart,
             width: 2,

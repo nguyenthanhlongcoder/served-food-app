@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/app_colors.dart';
 import 'package:served_food/app/common/app_styles/app_size.dart';
 import 'package:served_food/app/common/app_styles/app_text_styles.dart';
+import 'package:searchfield/searchfield.dart';
+import 'package:served_food/app/modules/browse/controllers/product_slider_controller.dart';
 
 class SearchInput extends StatelessWidget {
   const SearchInput({
     Key key,
+    this.productSuggestions,
   }) : super(key: key);
-
+  final List<String> productSuggestions;
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(
+    return SearchField(
+      searchInputDecoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
         hintText: 'Search...',
@@ -20,6 +24,7 @@ class SearchInput extends StatelessWidget {
         border: kInputBorder,
         focusedBorder: kInputBorder,
         enabledBorder: kInputBorder,
+        contentPadding: EdgeInsets.all(kPadding),
         prefixIcon: Container(
             width: kIconBoxSize,
             height: kIconBoxSize,
@@ -29,8 +34,9 @@ class SearchInput extends StatelessWidget {
               color: kHintColor,
             )),
       ),
-      style: kBodyTextStyle.copyWith(
+      searchStyle: kBodyTextStyle.copyWith(
           fontSize: kSubtitleTextSize, color: kTextColor),
+      suggestions: productSuggestions,
     );
   }
 }

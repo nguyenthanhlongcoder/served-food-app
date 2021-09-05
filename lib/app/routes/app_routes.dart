@@ -4,4 +4,7 @@ class AppRoutes {
   static const HOME = '/HOME';
   static const MAIN = '/MAIN';
   static const PROMOTION = '/PROMOTION';
+  static const ORDER = '/ORDER';
+  static const BROWSE = '/BROWSE';
+  static const BROWSE_FILTER = '/BROWSE_FILTER';
 }

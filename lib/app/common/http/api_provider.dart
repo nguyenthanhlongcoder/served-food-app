@@ -34,24 +34,21 @@ class ApiProvider {
     return responseJson;
   }
 
-  Future<dynamic> delete(String url) async {
-    dynamic responseJson;
+  Future<int> delete(String url) async {
     try {
-      final dynamic response = await http.delete(Uri.parse(url), headers: {
+      final http.Response response =
+          await http.delete(Uri.parse(url), headers: {
         'content-type': 'application/json',
         'accept': 'application/json',
       });
-
-      responseJson = _response(response);
+      return response.statusCode;
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }
-    return responseJson;
   }
 
   dynamic _response(http.Response response) {
     switch (response.statusCode) {
-      case 204:
       case 201:
       case 200:
         final dynamic responseJson = json.decode(response.body.toString());

@@ -20,7 +20,7 @@ class SliderController extends GetxController {
         lstPromotion.clear();
         isDataProcessing(false);
         response.forEach((item) {
-          if (item['status']['id'] == 2) {
+          if (item['status'] == "in_progess") {
             lstPromotion.add(item);
           }
         });

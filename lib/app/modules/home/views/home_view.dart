@@ -5,88 +5,84 @@ import 'package:served_food/app/common/app_styles/app_colors.dart';
 import 'package:served_food/app/common/app_styles/app_size.dart';
 import 'package:served_food/app/common/app_styles/app_text_styles.dart';
 import 'package:served_food/app/common/app_widgets/product_item.dart';
+import 'package:served_food/app/common/providers/log_out.dart';
 import 'package:served_food/app/modules/home/components/home_message_list.dart';
 import 'package:served_food/app/modules/home/components/promotion_slider.dart';
-import 'package:served_food/app/modules/home/components/home_appbar.dart';
-import 'package:served_food/app/routes/app_pages.dart';
 
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        flexibleSpace: HomeAppBar(),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Home',
+          style: kBodyTextStyle.copyWith(
+              fontSize: kTitleTextSize,
+              color: kBtnColorStart,
+              fontWeight: FontWeight.w500),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.more_horiz,
+                color: Colors.black,
+              ))
+        ],
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: kPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: kPadding * 2,
-            ),
-            Text(
-              'Thông báo',
-              style: kBodyTextStyle.copyWith(
-                  fontSize: kSubtitleTextSize,
-                  color: kTextBlackColor,
-                  fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              height: kPadding * 1.5,
-            ),
-            // HomeMessageList(),
-            SizedBox(
-              height: kPadding * 1.5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Promotion',
-                  style: kBodyTextStyle.copyWith(
-                      fontSize: kSubtitleTextSize,
-                      color: kTextBlackColor,
-                      fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  'View all',
-                  style: kBodyTextStyle.copyWith(
-                      fontSize: kBodyTextSize,
-                      color: kBtnColorStart,
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: kPadding * 1.5,
-            ),
-            // PromotionSlider(),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(vertical: kPadding * 1.5),
-              child: Row(
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.all(kPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ProductItem(),
-                  SizedBox(
-                    width: kPadding * 1,
+                  Text(
+                    'Thông báo',
+                    style: kBodyTextStyle.copyWith(
+                        fontSize: kSubtitleTextSize,
+                        color: kTextBlackColor,
+                        fontWeight: FontWeight.w500),
                   ),
-                  ProductItem(),
                   SizedBox(
-                    width: kPadding * 1,
+                    height: kPadding * 1.5,
                   ),
-                  ProductItem()
+                  // HomeMessageList(),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: kPadding / 2,
+            ),
+            Container(
+              padding: EdgeInsets.all(kPadding),
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Text(
+                    'Promotion',
+                    style: kBodyTextStyle.copyWith(
+                        fontSize: kSubtitleTextSize,
+                        color: kTextBlackColor,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(
+                    height: kPadding * 1.5,
+                  ),
+                  // PromotionSlider(),
                 ],
               ),
             ),
             ElevatedButton(
                 onPressed: () {
-                  Get.toNamed(AppPages.LOGIN);
-                  new UserRepository().deleteAll();
+                  LogOut().logOut();
                 },
-                child: Text('logout'))
+                child: Text('Log Out'))
           ],
         ),
       ),

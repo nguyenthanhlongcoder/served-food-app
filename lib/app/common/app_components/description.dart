@@ -10,27 +10,31 @@ class Description extends StatelessWidget {
   final String description;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'description'.toUpperCase(),
-          style: kBodyTextStyle.copyWith(
-              fontSize: kSubtitleTextSize,
-              color: kTextBlackColor,
-              fontWeight: FontWeight.w500),
-        ),
-        SizedBox(
-          height: kPadding,
-        ),
-        Text(
-          description,
-          style: kBodyTextStyle.copyWith(
-              fontSize: kBodyTextSize,
-              color: kHintColor,
-              fontWeight: FontWeight.w500),
-        ),
-      ],
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(kPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'description'.toUpperCase(),
+            style: kBodyTextStyle.copyWith(
+                fontSize: kSubtitleTextSize,
+                color: kTextBlackColor,
+                fontWeight: FontWeight.w500),
+          ),
+          SizedBox(
+            height: kPadding,
+          ),
+          Text(
+            description,
+            style: kBodyTextStyle.copyWith(
+                fontSize: kBodyTextSize,
+                color: kHintColor,
+                fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
     );
   }
 }

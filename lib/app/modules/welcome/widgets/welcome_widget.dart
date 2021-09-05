@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/app_colors.dart';
 import 'package:served_food/app/common/app_styles/app_size.dart';
 import 'package:served_food/app/common/app_styles/app_text_styles.dart';
+import 'package:served_food/app/modules/welcome/controllers/welcome_controller.dart';
 
 class LoginTypeIconWidget extends StatelessWidget {
   const LoginTypeIconWidget({
@@ -38,26 +40,33 @@ class LineWidget extends StatelessWidget {
 }
 
 class LoginBtnWidget extends StatelessWidget {
-  const LoginBtnWidget({
-    Key key,
-  }) : super(key: key);
-
+  final WelcomeController controller = Get.put(WelcomeController());
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 208,
-      height: 48,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: kBtnShadow,
-        borderRadius: BorderRadius.circular(kBtnRadius),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        'Login',
-        style: kBtnTextStyle,
-      ),
-    );
+        width: 208,
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: kBtnShadow,
+          borderRadius: BorderRadius.circular(kBtnRadius),
+        ),
+        alignment: Alignment.center,
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Container(
+              width: kIconSize,
+              height: kIconSize,
+              child: CircularProgressIndicator(
+                color: kBtnColorStart,
+              ),
+            );
+          }
+          return Text(
+            'Login',
+            style: kBtnTextStyle,
+          );
+        }));
   }
 }
 

@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
+import 'package:served_food/app/modules/browse/views/browse_filter_view.dart';
+import 'package:served_food/app/modules/browse/views/browse_view.dart';
 import 'package:served_food/app/modules/home/bindings/home_binding.dart';
 import 'package:served_food/app/modules/home/views/home_view.dart';
 import 'package:served_food/app/modules/main/bindings/main_binding.dart';
 import 'package:served_food/app/modules/login/bindings/login_binding.dart';
 import 'package:served_food/app/modules/login/views/login_view.dart';
 import 'package:served_food/app/modules/main/views/main_view.dart';
+import 'package:served_food/app/modules/order/bindings/order_bindings.dart';
+import 'package:served_food/app/modules/order/views/order_view.dart';
 import 'package:served_food/app/modules/promotion/bindings/promotion_binding.dart';
 import 'package:served_food/app/modules/promotion/views/promotion_view.dart';
 import 'package:served_food/app/modules/welcome/views/welcome_view.dart';
@@ -30,6 +34,18 @@ class AppPages {
     GetPage(
         name: AppRoutes.PROMOTION,
         page: () => new PromotionView(),
-        binding: PromotionBinding())
+        binding: PromotionBinding()),
+    GetPage(
+        name: AppRoutes.ORDER,
+        page: () => new OrderView(),
+        binding: OrderBinding()),
+    GetPage(
+      name: AppRoutes.BROWSE,
+      page: () => new BrowseView(),
+    ),
+    GetPage(
+      name: AppRoutes.BROWSE_FILTER,
+      page: () => new BrowseFilterView(),
+    )
   ];
 }

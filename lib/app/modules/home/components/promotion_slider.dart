@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_components/failure_load.dart';
 import 'package:served_food/app/modules/home/controllers/slider_controller.dart';
 import 'package:served_food/app/routes/app_routes.dart';
+import 'package:skeletons/skeletons.dart';
 
 class PromotionSlider extends StatelessWidget {
   final SliderController controller = Get.put(SliderController());
@@ -49,15 +51,15 @@ class PromotionSlider extends StatelessWidget {
             Get.toNamed(AppRoutes.PROMOTION, arguments: item['id'].toString());
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: item['image'] != null
-                ? Image.network(
-                    item['image'],
-                    fit: BoxFit.cover,
-                    width: Get.width,
-                  )
-                : Placeholder(),
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: CachedNetworkImage(
+                imageUrl: item['image'],
+                fit: BoxFit.cover,
+                width: Get.width,
+                placeholder: (context, url) {
+                  return SkeletonAvatar();
+                },
+              )),
         ),
       );
     }).toList();

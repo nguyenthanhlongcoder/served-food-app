@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/app_size.dart';
 import 'package:served_food/app/common/app_styles/app_text_styles.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
@@ -73,11 +74,23 @@ class LoginBtnIconWidget extends StatelessWidget {
                   text: 'Login',
                 ),
                 Spacer(),
-                Image.asset(
-                  'assets/icons/icon_arrow_right.png',
-                  width: kIconSize,
-                  height: kIconSize,
-                ),
+                Obx(() {
+                  if (loginController.isLoading.value) {
+                    return Container(
+                      width: kIconSize,
+                      height: kIconSize,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    );
+                  } else {
+                    return Image.asset(
+                      'assets/icons/icon_arrow_right.png',
+                      width: kIconSize,
+                      height: kIconSize,
+                    );
+                  }
+                }),
                 SizedBox(width: 24),
               ],
             ),

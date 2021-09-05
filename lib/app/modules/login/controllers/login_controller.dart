@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:served_food/app/common/app_datas/get_request_url.dart';
 import 'package:served_food/app/common/app_datas/user_repository.dart';
 import 'package:served_food/app/common/http/api_provider.dart';
+import 'package:served_food/app/common/providers/log_out.dart';
 import 'package:served_food/app/routes/app_routes.dart';
 
 class LoginController extends GetxController {
@@ -65,9 +63,9 @@ class LoginController extends GetxController {
         String expiry = response['expiry'];
 
         userRepository.persistUser(id, expiry);
-        Get.toNamed(AppRoutes.MAIN);
+        Get.offAndToNamed(AppRoutes.MAIN);
       } else {
-        print('Login Failed');
+        LogOut().logOut();
       }
     } finally {
       isLoading(false);

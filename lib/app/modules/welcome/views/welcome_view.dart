@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/app_colors.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
 import 'package:served_food/app/common/app_widgets/gradient_btn_widget.dart';
+import 'package:served_food/app/modules/welcome/controllers/welcome_controller.dart';
 import 'package:served_food/app/modules/welcome/widgets/welcome_widget.dart';
 import 'package:served_food/app/routes/app_routes.dart';
 
-class WelcomeView extends StatelessWidget {
+class WelcomeView extends GetView<WelcomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +25,7 @@ class WelcomeView extends StatelessWidget {
           GestureDetector(
             child: LoginBtnWidget(),
             onTap: () {
+              controller.isLoading(true);
               Get.toNamed(AppRoutes.LOGIN);
             },
           ),
