@@ -12,10 +12,12 @@ class LoginView extends GetView<LoginController> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Image.asset('assets/images/bg_login_header.png'),
+          Image.asset(
+            'assets/images/bg_login_header.png',
+          ),
           Column(
             children: [
-              SizedBox(height: 250),
+              SizedBox(height: 200),
               ClipPath(
                 clipper: LoginClipper(),
                 child: LoginBodyWidget(
@@ -59,7 +61,7 @@ class LoginBodyWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: 30),
             Text(
               'Login',
               style: kTitleTextStyle,

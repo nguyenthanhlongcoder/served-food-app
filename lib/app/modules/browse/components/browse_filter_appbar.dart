@@ -6,8 +6,9 @@ import 'package:served_food/app/common/app_styles/app_text_styles.dart';
 class BrowseFilterAppBar extends StatelessWidget {
   const BrowseFilterAppBar({
     Key key,
+    this.title,
   }) : super(key: key);
-
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +35,7 @@ class BrowseFilterAppBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: kPadding),
             child: Text(
-              'Trending',
+              title,
               style: kBodyTextStyle.copyWith(
                   fontSize: kTitleTextSize,
                   color: Colors.white,

@@ -9,6 +9,7 @@ import 'package:served_food/app/modules/login/views/login_view.dart';
 import 'package:served_food/app/modules/main/views/main_view.dart';
 import 'package:served_food/app/modules/order/bindings/order_bindings.dart';
 import 'package:served_food/app/modules/order/views/order_view.dart';
+import 'package:served_food/app/modules/product/views/product_view.dart';
 import 'package:served_food/app/modules/promotion/bindings/promotion_binding.dart';
 import 'package:served_food/app/modules/promotion/views/promotion_view.dart';
 import 'package:served_food/app/modules/welcome/views/welcome_view.dart';
@@ -46,6 +47,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.BROWSE_FILTER,
       page: () => new BrowseFilterView(),
+    ),
+    GetPage(
+      name: AppRoutes.PRODUCT_DETAIL,
+      page: () => new ProductView(),
     )
   ];
 }

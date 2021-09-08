@@ -1,9 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:served_food/app/common/app_components/failure_load.dart';
-import 'package:served_food/app/common/app_styles/app_shadow.dart';
+
 import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
 import 'package:served_food/app/common/app_widgets/gradient_btn_widget.dart';
@@ -16,32 +13,21 @@ import 'package:served_food/app/routes/app_routes.dart';
 class OrderView extends GetView<OrderController> {
   @override
   Widget build(BuildContext context) {
-    controller.updateTableID(Get.arguments);
+    controller.updateTableID(Get.arguments['id'].toString());
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(),
-        title: Obx(() {
-          if (controller.isDataProcessing.value) {
-            return SpinKitWave(
+        leading: BackButton(
+          onPressed: () {
+            controller.backToTable(Get.arguments);
+          },
+        ),
+        title: Text(
+          Get.arguments['name'],
+          style: kBodyTextStyle.copyWith(
+              fontSize: kTitleTextSize,
               color: Colors.white,
-              size: 30.0,
-            );
-          } else {
-            if (controller.isDataError.value) {
-              return FailureLoad(onPressed: () {
-                controller.getOrderDetail();
-              });
-            } else {
-              return Text(
-                controller.table.value.name,
-                style: kBodyTextStyle.copyWith(
-                    fontSize: kTitleTextSize,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500),
-              );
-            }
-          }
-        }),
+              fontWeight: FontWeight.w500),
+        ),
         actions: [
           TextButton(
               onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
+import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/order/widgets/order_item_header.dart';
 import 'package:served_food/app/modules/order/widgets/order_item_image.dart';
 
@@ -12,12 +13,16 @@ class OrderItem extends StatelessWidget {
     this.quantity,
     this.note,
     this.price,
+    this.user,
+    this.time,
   }) : super(key: key);
   final String image;
   final String title;
   final String quantity;
   final String note;
   final String price;
+  final String user;
+  final String time;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -28,6 +33,8 @@ class OrderItem extends StatelessWidget {
           quantity: quantity,
           note: note,
           price: price,
+          user: user,
+          time: time,
         ));
       },
       child: Row(
@@ -82,12 +89,16 @@ class BottomSheet extends StatelessWidget {
     this.quantity,
     this.note,
     this.price,
+    this.user,
+    this.time,
   }) : super(key: key);
   final String image;
   final String title;
-  final quantity;
-  final note;
-  final price;
+  final String quantity;
+  final String note;
+  final String price;
+  final String user;
+  final String time;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -110,22 +121,59 @@ class BottomSheet extends StatelessWidget {
               SizedBox(
                 width: kPadding,
               ),
-              Flexible(
-                child: RichText(
-                  text: TextSpan(
-                      text: title + ' - SL: ',
-                      style: kBodyTextStyle.copyWith(
-                          color: Colors.black,
-                          fontSize: kSubtitleTextSize,
-                          fontWeight: FontWeight.bold),
-                      children: [
-                        TextSpan(
-                            text: quantity,
-                            style: kBodyTextStyle.copyWith(
-                                color: kBtnColorStart,
-                                fontSize: kSubtitleTextSize,
-                                fontWeight: FontWeight.bold))
-                      ]),
+              Container(
+                height: 80,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 40,
+                      width: Get.width - 80 - kPadding * 3,
+                      child: Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                              text: title + ' - SL: ',
+                              style: kBodyTextStyle.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                              children: [
+                                TextSpan(
+                                    text: quantity,
+                                    style: kBodyTextStyle.copyWith(
+                                        color: kBtnColorStart,
+                                        fontWeight: FontWeight.bold))
+                              ]),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: kPadding / 2,
+                    ),
+                    Container(
+                      width: Get.width - 80 - kPadding * 3,
+                      child: RichText(
+                          text: TextSpan(
+                              text: 'by ',
+                              style: kBodyTextStyle,
+                              children: [
+                            TextSpan(
+                                text: user,
+                                style: kBodyTextStyle.copyWith(
+                                    fontWeight: FontWeight.bold),
+                                children: [
+                                  TextSpan(
+                                      text: ' at ',
+                                      style: kBodyTextStyle,
+                                      children: [
+                                        TextSpan(
+                                            text: time.split('.').first,
+                                            style: kBodyTextStyle.copyWith(
+                                                fontWeight: FontWeight.bold))
+                                      ]),
+                                ])
+                          ])),
+                    )
+                  ],
                 ),
               ),
             ],

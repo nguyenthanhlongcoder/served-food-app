@@ -27,11 +27,7 @@ class LoginController extends GetxController {
         DateTime expiryDateTime =
             DateFormat("yyyy-MM-dd HH:mm:ss").parse(expiry);
         if (expiryDateTime.isAfter(DateTime.now())) {
-          Get.toNamed(AppRoutes.MAIN);
-          Fluttertoast.showToast(
-            msg: 'Login Success',
-            toastLength: Toast.LENGTH_LONG,
-          );
+          Get.offNamedUntil(AppRoutes.MAIN, (route) => false);
         } else {
           userRepository.deleteAll();
         }
@@ -61,9 +57,13 @@ class LoginController extends GetxController {
         print('Login Sucess: ' + response['user']['username'].toString());
         String id = response['user']['id'].toString();
         String expiry = response['expiry'];
-
+        Get.offNamedUntil(AppRoutes.MAIN, (route) => false);
         userRepository.persistUser(id, expiry);
-        Get.offAndToNamed(AppRoutes.MAIN);
+
+        Fluttertoast.showToast(
+          msg: 'Login Success',
+          toastLength: Toast.LENGTH_LONG,
+        );
       } else {
         LogOut().logOut();
       }

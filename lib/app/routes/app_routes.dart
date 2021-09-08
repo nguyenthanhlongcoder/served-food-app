@@ -7,4 +7,5 @@ class AppRoutes {
   static const ORDER = '/ORDER';
   static const BROWSE = '/BROWSE';
   static const BROWSE_FILTER = '/BROWSE_FILTER';
+  static const PRODUCT_DETAIL = '/PRODUCT_DETAIL';
 }

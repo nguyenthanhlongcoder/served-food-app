@@ -13,46 +13,49 @@ class BrowseView extends StatelessWidget {
   Widget build(BuildContext context) {
     CategoryController controller = Get.put(CategoryController());
     Get.put(ProductSliderController());
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 140,
-        flexibleSpace: BrowseAppBar(),
-        automaticallyImplyLeading: false,
-      ),
-      drawer: Drawer(),
-      body: Container(
-        padding: EdgeInsets.all(kPadding),
-        child: Obx(() {
-          if (controller.isDataProcessing.value) {
-            return Center(
-              child: SpinKitWave(
-                color: kBtnColorStart,
-                size: 30,
-              ),
-            );
-          } else {
-            if (controller.isDataError.value) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 140,
+          flexibleSpace: BrowseAppBar(),
+          automaticallyImplyLeading: false,
+        ),
+        drawer: Drawer(),
+        body: Container(
+          padding: EdgeInsets.all(kPadding),
+          child: Obx(() {
+            if (controller.isDataProcessing.value) {
               return Center(
-                child: FailureLoad(
-                    title: 'Error',
-                    message: controller.dataError.value,
-                    onPressed: () {
-                      controller.getCategories();
-                    }),
+                child: SpinKitFadingFour(
+                  color: kBtnColorStart,
+                  size: 50,
+                ),
               );
             } else {
-              return SingleChildScrollView(
-                child: Column(
-                    children:
-                        List.generate(controller.lstCategories.length, (index) {
-                  return new BrowseSliderComponent(
-                      id: controller.lstCategories[index]['id'].toString(),
-                      name: controller.lstCategories[index]['name']);
-                })),
-              );
+              if (controller.isDataError.value) {
+                return Center(
+                  child: FailureLoad(
+                      title: 'Error',
+                      message: controller.dataError.value,
+                      onPressed: () {
+                        controller.getCategories();
+                      }),
+                );
+              } else {
+                return SingleChildScrollView(
+                  child: Column(
+                      children: List.generate(controller.lstCategories.length,
+                          (index) {
+                    return new BrowseSliderComponent(
+                        id: controller.lstCategories[index]['id'].toString(),
+                        name: controller.lstCategories[index]['name']);
+                  })),
+                );
+              }
             }
-          }
-        }),
+          }),
+        ),
       ),
     );
   }

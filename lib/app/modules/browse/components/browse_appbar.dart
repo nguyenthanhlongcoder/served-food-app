@@ -5,6 +5,7 @@ import 'package:served_food/app/common/app_styles/app_size.dart';
 import 'package:served_food/app/common/app_styles/app_text_styles.dart';
 import 'package:served_food/app/modules/browse/controllers/product_slider_controller.dart';
 import 'package:served_food/app/modules/browse/widgets/search_input.dart';
+import 'package:served_food/app/routes/app_routes.dart';
 
 class BrowseAppBar extends StatelessWidget {
   @override
@@ -32,7 +33,10 @@ class BrowseAppBar extends StatelessWidget {
                 ],
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(AppRoutes.BROWSE_FILTER,
+                        arguments: [0, 'Menu']);
+                  },
                   child: Text(
                     'Menu',
                     style: kBodyTextStyle.copyWith(

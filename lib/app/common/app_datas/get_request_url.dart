@@ -24,6 +24,10 @@ class GetRequestUrl {
   static const ORDER_DETAIL = 'https://served-food.herokuapp.com/orders/';
   static const PRODUCTS =
       'https://served-food.herokuapp.com/products/?is_active=true';
+  static const FILTER_PRODUCTS =
+      'https://served-food.herokuapp.com/products/?is_active=true&category=';
   static const CATEGORIES =
       'https://served-food.herokuapp.com/products/categories';
+  static const PRODUCT_DETAIL = 'https://served-food.herokuapp.com/products/';
+  static const USER_DETAIL = 'https://served-food.herokuapp.com/users/';
 }

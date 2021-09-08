@@ -63,6 +63,7 @@ class HomeView extends StatelessWidget {
               padding: EdgeInsets.all(kPadding),
               color: Colors.white,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
                     'Promotion',
@@ -81,6 +82,7 @@ class HomeView extends StatelessWidget {
             ElevatedButton(
                 onPressed: () {
                   LogOut().logOut();
+                  UserRepository().deleteAll();
                 },
                 child: Text('Log Out'))
           ],

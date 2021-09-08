@@ -21,4 +21,17 @@ class TableProvider extends GetConnect {
       return Future.error(e.toString());
     }
   }
+
+  Future<dynamic> updateTable(String id, dynamic body) async {
+    try {
+      final response = await put(GetRequestUrl.TABLE_DETAIL + id, body);
+      if (response.status.hasError) {
+        return Future.error(response.statusText);
+      } else {
+        return response.body;
+      }
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 }

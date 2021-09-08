@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 import 'package:served_food/app/common/app_components/failure_load.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/app_widgets/product_item.dart';
+import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/browse/controllers/product_slider_controller.dart';
+import 'package:served_food/app/modules/browse/views/browse_filter_view.dart';
+import 'package:served_food/app/routes/app_routes.dart';
 
 class BrowseSliderComponent extends StatelessWidget {
   const BrowseSliderComponent({
@@ -33,13 +36,18 @@ class BrowseSliderComponent extends StatelessWidget {
                     color: kTextBlackColor,
                     fontWeight: FontWeight.w500),
               ),
-              Text(
-                'View all',
-                style: kBodyTextStyle.copyWith(
-                    fontSize: kBodyTextSize,
-                    color: kBtnColorStart,
-                    fontWeight: FontWeight.w500),
-              ),
+              TextButton(
+                onPressed: () {
+                  Get.toNamed(AppRoutes.BROWSE_FILTER, arguments: [id, name]);
+                },
+                child: Text(
+                  'View all',
+                  style: kBodyTextStyle.copyWith(
+                      fontSize: kBodyTextSize,
+                      color: kBtnColorStart,
+                      fontWeight: FontWeight.w500),
+                ),
+              )
             ],
           ),
           SizedBox(
@@ -48,7 +56,7 @@ class BrowseSliderComponent extends StatelessWidget {
           Obx(() {
             if (controller.isDataProcessing.value) {
               return Center(
-                child: SpinKitWave(
+                child: SpinKitFadingFour(
                   color: kBtnColorStart,
                   size: 30,
                 ),
@@ -75,12 +83,12 @@ class BrowseSliderComponent extends StatelessWidget {
                   child: Row(
                     children: List.generate(data.length, (index) {
                       return ProductItem(
+                        id: data[index]['id'].toString(),
                         title: data[index]['name'],
                         image: data[index]['image'],
                         description: data[index]['description'],
-                        price: data[index]['product_variation_option'][0]
-                                    ['price']
-                                .toString() +
+                        price: formatNumber(data[index]
+                                ['product_variation_option'][0]['price']) +
                             ' VNĐ',
                         labels: data[index]['label'],
                       );

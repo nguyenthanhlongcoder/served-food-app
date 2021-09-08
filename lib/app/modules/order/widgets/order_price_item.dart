@@ -17,14 +17,14 @@ class OrderPriceItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          title ?? '',
+          title,
           style: kBodyTextStyle.copyWith(
               color: Colors.black,
               fontSize: isTotal ? kTitleTextSize * 0.7 : kSubtitleTextSize,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.w400),
         ),
         Text(
-          price ?? '',
+          price,
           style: kBodyTextStyle.copyWith(
               fontSize: isTotal ? kTitleTextSize * 0.7 : kSubtitleTextSize,
               color: isTotal ? Colors.black : kHintColor,

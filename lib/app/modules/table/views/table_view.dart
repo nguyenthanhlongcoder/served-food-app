@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/modules/table/controllers/table_controller.dart';
 import 'package:served_food/app/modules/table/widgets/table_item.dart';
 import 'package:served_food/app/routes/app_routes.dart';
+import 'package:skeletons/skeletons.dart';
 
 class TableView extends StatelessWidget {
   final TableController controller = Get.put(TableController());
@@ -38,11 +41,9 @@ class TableView extends StatelessWidget {
           padding: EdgeInsets.all(kPadding),
           child: Obx(() {
             if (controller.isDataProcessing.value) {
-              return Center(
-                child: Container(
-                  margin: EdgeInsets.all(8),
-                  child: CircularProgressIndicator(),
-                ),
+              return SpinKitFadingFour(
+                color: kBtnColorStart,
+                size: 50.0,
               );
             } else {
               if (controller.isDataError.value) {
@@ -77,11 +78,10 @@ class TableView extends StatelessWidget {
                             return FocusedMenuHolder(
                               onPressed: () {
                                 if (data[index]['is_in_use']) {
-                                  Get.snackbar(
-                                      'Thông báo', 'Bàn đang được sử dụng');
+                                  Fluttertoast.showToast(
+                                      msg: 'This table is been using.');
                                 } else {
-                                  Get.toNamed(AppRoutes.ORDER,
-                                      arguments: data[index]['id'].toString());
+                                  controller.openTable(data[index]);
                                 }
                               },
                               menuWidth: Get.width / 2,
@@ -89,7 +89,9 @@ class TableView extends StatelessWidget {
                               menuItems: <FocusedMenuItem>[
                                 FocusedMenuItem(
                                     title: Text('Mở'),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      controller.openTable(data[index]);
+                                    },
                                     trailingIcon: Icon(
                                       Icons.open_in_new,
                                       color: kBtnColorStart,
@@ -110,7 +112,9 @@ class TableView extends StatelessWidget {
                                     )),
                                 FocusedMenuItem(
                                     title: Text('Đặt Lại'),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      controller.resetTable(data[index]);
+                                    },
                                     trailingIcon: Icon(
                                       Icons.restart_alt,
                                       color: kBtnColorStart,

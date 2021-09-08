@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_components/failure_load.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
+import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/order/controllers/order_controller.dart';
 import 'package:served_food/app/modules/order/widgets/order_item.dart';
 
@@ -32,17 +33,29 @@ class OrderItemComponent extends StatelessWidget {
           ]),
       child: Obx(() {
         if (controller.isDataProcessing.value) {
-          return SpinKitWave(
+          return SpinKitFadingFour(
             color: kBtnColorStart,
-            size: 30.0,
+            size: 50.0,
           );
         } else {
           if (controller.isDataError.value) {
-            return Center(child: FailureLoad(
-              onPressed: () {
-                controller.getOrderDetail();
-              },
-            ));
+            if (controller.dataError.value == 'Not Found') {
+              return Center(
+                child: Text(
+                  'Nothing',
+                  style: kBodyTextStyle.copyWith(
+                      color: kBtnColorStart,
+                      fontSize: kSubtitleTextSize,
+                      fontWeight: FontWeight.bold),
+                ),
+              );
+            } else {
+              return Center(child: FailureLoad(
+                onPressed: () {
+                  controller.getOrderDetail();
+                },
+              ));
+            }
           } else {
             return ListView.separated(
               itemCount: controller.order.value.orderItem != null
@@ -58,7 +71,12 @@ class OrderItemComponent extends StatelessWidget {
                   quantity: controller.order.value.orderItem[index].quantity
                       .toString(),
                   note: controller.order.value.orderItem[index].note,
-                  price: controller.order.value.orderItem[index].orderItemPrice
+                  price: formatNumber(
+                      controller.order.value.orderItem[index].orderItemPrice),
+                  user: controller.order.value.orderItem[index].user.lastName +
+                      ' ' +
+                      controller.order.value.orderItem[index].user.firstName,
+                  time: controller.order.value.orderItem[index].createdAt
                       .toString(),
                 );
               },
