@@ -11,6 +11,7 @@ import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/modules/table/controllers/table_controller.dart';
 import 'package:served_food/app/modules/table/widgets/table_item.dart';
 import 'package:served_food/app/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
 
 class TableView extends StatelessWidget {
@@ -76,11 +77,14 @@ class TableView extends StatelessWidget {
                               }
                             }
                             return FocusedMenuHolder(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (data[index]['is_in_use']) {
                                   Fluttertoast.showToast(
                                       msg: 'This table is been using.');
                                 } else {
+                                  SharedPreferences pref =
+                                      await SharedPreferences.getInstance();
+                                  pref.clear();
                                   controller.openTable(data[index]);
                                 }
                               },
@@ -89,7 +93,10 @@ class TableView extends StatelessWidget {
                               menuItems: <FocusedMenuItem>[
                                 FocusedMenuItem(
                                     title: Text('Mở'),
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      SharedPreferences pref =
+                                          await SharedPreferences.getInstance();
+                                      pref.clear();
                                       controller.openTable(data[index]);
                                     },
                                     trailingIcon: Icon(
@@ -112,7 +119,10 @@ class TableView extends StatelessWidget {
                                     )),
                                 FocusedMenuItem(
                                     title: Text('Đặt Lại'),
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      SharedPreferences pref =
+                                          await SharedPreferences.getInstance();
+                                      pref.clear();
                                       controller.resetTable(data[index]);
                                     },
                                     trailingIcon: Icon(

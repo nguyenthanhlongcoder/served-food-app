@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/modules/order/models/order_model.dart';
 import 'package:served_food/app/modules/order/providers/order_provider.dart';
 import 'package:served_food/app/modules/table/providers/table_provider.dart';

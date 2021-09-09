@@ -8,6 +8,7 @@ import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/modules/table/providers/table_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:served_food/app/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TableController extends GetxController {
   var isDataProcessing = false.obs;
@@ -21,7 +22,7 @@ class TableController extends GetxController {
     getTables();
   }
 
-  void resetTable(var arguments) {
+  void resetTable(var arguments) async {
     dynamic table = jsonEncode({
       'id': arguments['id'],
       'name': arguments['name'],

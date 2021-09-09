@@ -77,6 +77,9 @@ class ProductView extends StatelessWidget {
                         height: kPadding * 2,
                       ),
                       TextField(
+                        onChanged: (value) {
+                          controller.note.value = value;
+                        },
                         maxLines: 3,
                         decoration: InputDecoration(
                           filled: true,
@@ -99,10 +102,23 @@ class ProductView extends StatelessWidget {
                       SizedBox(
                         height: kPadding * 2,
                       ),
-                      GradientBtnWidget(
-                          child: BtnTextWhiteWidget(
-                        text: 'Add to table',
-                      ))
+                      GradientBtnWidget(onTap: () {
+                        controller.addToTable();
+                      }, child: Obx(() {
+                        if (controller.isAddToTableLoading.value) {
+                          return Container(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          );
+                        } else {
+                          return BtnTextWhiteWidget(
+                            text: 'Add to table',
+                          );
+                        }
+                      }))
                     ],
                   ),
                 ),

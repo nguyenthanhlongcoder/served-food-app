@@ -18,6 +18,8 @@ class GetRequestUrl {
     return requestUrl;
   }
 
+  static const CREATE_ORDER_ITEM =
+      'https://served-food.herokuapp.com/orders/create_order_item';
   static const ORDER_ITEMS =
       'https://served-food.herokuapp.com/orders/order_item?order=';
   static const TABLE_DETAIL = 'https://served-food.herokuapp.com/tables/';

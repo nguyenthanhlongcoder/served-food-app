@@ -44,10 +44,9 @@ class ProductPricesState extends State<ProductPrices> {
                       radioValue = controller.productVaritionGroupValue[index];
                       controller.setProductPrice(controller
                           .product.value.productVariationOption[index].price);
-
+                      controller.setProductVariationOption(controller
+                          .product.value.productVariationOption[index].id);
                       controller.setProductTotalPrice();
-                      print(controller
-                          .product.value.productVariationOption[index].price);
                     });
                   }),
               RichText(
