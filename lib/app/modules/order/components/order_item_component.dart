@@ -10,11 +10,11 @@ import 'package:served_food/app/modules/order/widgets/order_item.dart';
 class OrderItemComponent extends StatelessWidget {
   const OrderItemComponent({
     Key key,
+    this.controller,
   }) : super(key: key);
-
+  final OrderController controller;
   @override
   Widget build(BuildContext context) {
-    OrderController controller = Get.put(OrderController());
     return Container(
       height: Get.height / 2,
       margin: EdgeInsets.symmetric(horizontal: kPadding),
@@ -57,33 +57,49 @@ class OrderItemComponent extends StatelessWidget {
               ));
             }
           } else {
-            return ListView.separated(
-              itemCount: controller.order.value.orderItem != null
-                  ? controller.order.value.orderItem.length
-                  : 0,
-              itemBuilder: (context, index) {
-                return OrderItem(
-                  image: controller.order.value.orderItem[index].product.image,
-                  title: controller.order.value.orderItem[index].product.name +
-                      ' - ' +
-                      controller.order.value.orderItem[index]
-                          .productVariationOption.variationOption.name,
-                  quantity: controller.order.value.orderItem[index].quantity
-                      .toString(),
-                  note: controller.order.value.orderItem[index].note,
-                  price: formatNumber(
-                      controller.order.value.orderItem[index].orderItemPrice),
-                  user: controller.order.value.orderItem[index].user.lastName +
-                      ' ' +
-                      controller.order.value.orderItem[index].user.firstName,
-                  time: controller.order.value.orderItem[index].createdAt
-                      .toString(),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider();
-              },
-            );
+            if (controller.order.value != null) {
+              return ListView.separated(
+                itemCount: controller.order.value.orderItem != null
+                    ? controller.order.value.orderItem.length
+                    : 0,
+                itemBuilder: (context, index) {
+                  return OrderItem(
+                    id: controller.order.value.orderItem[index].id,
+                    image:
+                        controller.order.value.orderItem[index].product.image,
+                    title:
+                        controller.order.value.orderItem[index].product.name +
+                            ' - ' +
+                            controller.order.value.orderItem[index]
+                                .productVariationOption.variationOption.name,
+                    quantity: controller.order.value.orderItem[index].quantity
+                        .toString(),
+                    note: controller.order.value.orderItem[index].note,
+                    price: formatNumber(
+                        controller.order.value.orderItem[index].orderItemPrice),
+                    user: controller
+                            .order.value.orderItem[index].user.lastName +
+                        ' ' +
+                        controller.order.value.orderItem[index].user.firstName,
+                    time: controller.order.value.orderItem[index].createdAt
+                        .toString(),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+              );
+            } else {
+              return Center(
+                child: Text(
+                  'Nothing',
+                  style: kBodyTextStyle.copyWith(
+                      color: kBtnColorStart,
+                      fontSize: kSubtitleTextSize,
+                      fontWeight: FontWeight.bold),
+                ),
+              );
+            }
           }
         }
       }),

@@ -10,10 +10,11 @@ import 'package:served_food/app/modules/order/widgets/order_price_item.dart';
 class OrderPriceComponent extends StatelessWidget {
   const OrderPriceComponent({
     Key key,
+    this.controller,
   }) : super(key: key);
+  final OrderController controller;
   @override
   Widget build(BuildContext context) {
-    OrderController controller = Get.put(OrderController());
     return Container(
       margin: EdgeInsets.symmetric(horizontal: kPadding),
       width: Get.width - kPadding * 2,
@@ -59,7 +60,7 @@ class OrderPriceComponent extends StatelessWidget {
                     );
                   }
                 } else {
-                  if (controller.order != null) {
+                  if (controller.order.value != null) {
                     String subTotal =
                         formatNumber(controller.order.value.orderTotalPrice);
                     return OrderPriceItem(
@@ -121,7 +122,7 @@ class OrderPriceComponent extends StatelessWidget {
                     );
                   }
                 } else {
-                  if (controller.order != null) {
+                  if (controller.order.value != null) {
                     String subTotal =
                         formatNumber(controller.order.value.orderTotalPrice);
                     return OrderPriceItem(

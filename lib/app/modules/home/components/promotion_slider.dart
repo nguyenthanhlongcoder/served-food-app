@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_components/failure_load.dart';
+import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/modules/home/controllers/slider_controller.dart';
 import 'package:served_food/app/routes/app_routes.dart';
 import 'package:skeletons/skeletons.dart';
@@ -14,9 +16,9 @@ class PromotionSlider extends StatelessWidget {
     return Obx(() {
       if (controller.isDataProcessing.value) {
         return Center(
-          child: Container(
-            margin: EdgeInsets.all(8),
-            child: CircularProgressIndicator(),
+          child: SpinKitFadingFour(
+            color: kBtnColorStart,
+            size: 50,
           ),
         );
       } else {
@@ -29,13 +31,25 @@ class PromotionSlider extends StatelessWidget {
           return StreamBuilder(
               stream: controller.getPromotion(),
               builder: (context, snapshot) {
-                return CarouselSlider(
-                    items: generateSlider(),
-                    options: CarouselOptions(
-                        autoPlay: true,
-                        aspectRatio: 3.0,
-                        enlargeCenterPage: true,
-                        enlargeStrategy: CenterPageEnlargeStrategy.height));
+                if (controller.lstPromotion.length != 0) {
+                  return CarouselSlider(
+                      items: generateSlider(),
+                      options: CarouselOptions(
+                          autoPlay: true,
+                          aspectRatio: 3.0,
+                          enlargeCenterPage: true,
+                          enlargeStrategy: CenterPageEnlargeStrategy.height));
+                } else {
+                  return Center(
+                    child: Text(
+                      'Nothing',
+                      style: kBodyTextStyle.copyWith(
+                          color: kBtnColorStart,
+                          fontSize: kSubtitleTextSize,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  );
+                }
               });
         }
       }

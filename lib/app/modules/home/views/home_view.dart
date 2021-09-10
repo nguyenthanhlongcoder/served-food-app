@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:served_food/app/common/app_datas/user_repository.dart';
 import 'package:served_food/app/common/app_styles/app_colors.dart';
 import 'package:served_food/app/common/app_styles/app_size.dart';
 import 'package:served_food/app/common/app_styles/app_text_styles.dart';
-import 'package:served_food/app/common/app_widgets/product_item.dart';
 import 'package:served_food/app/common/providers/log_out.dart';
 import 'package:served_food/app/modules/home/components/home_message_list.dart';
 import 'package:served_food/app/modules/home/components/promotion_slider.dart';
@@ -52,7 +50,7 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: kPadding * 1.5,
                   ),
-                  // HomeMessageList(),
+                  HomeMessageList(),
                 ],
               ),
             ),
@@ -66,7 +64,7 @@ class HomeView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Promotion',
+                    'Promotions',
                     style: kBodyTextStyle.copyWith(
                         fontSize: kSubtitleTextSize,
                         color: kTextBlackColor,
@@ -75,7 +73,7 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: kPadding * 1.5,
                   ),
-                  // PromotionSlider(),
+                  PromotionSlider(),
                 ],
               ),
             ),

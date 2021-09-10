@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  bouncing_widget: ^2.0.0
   animated_theme_switcher: ^2.0.1
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
@@ -31,6 +32,7 @@ dependencies:
   firebase_core: ^1.6.0
   firebase_messaging: ^10.0.6
   shared_preferences: ^2.0.7
+  avatar_glow: ^2.0.1
   flutter:
     sdk: flutter
   flutter_local_notifications: ^8.1.1+1

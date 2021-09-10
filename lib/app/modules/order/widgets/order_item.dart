@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
+import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
 import 'package:served_food/app/common/providers/format_number.dart';
+import 'package:served_food/app/modules/order/controllers/order_item_controller.dart';
+import 'package:served_food/app/modules/order/widgets/btn_delete_widget.dart';
 import 'package:served_food/app/modules/order/widgets/order_item_header.dart';
 import 'package:served_food/app/modules/order/widgets/order_item_image.dart';
 
@@ -15,6 +19,7 @@ class OrderItem extends StatelessWidget {
     this.price,
     this.user,
     this.time,
+    this.id,
   }) : super(key: key);
   final String image;
   final String title;
@@ -23,19 +28,20 @@ class OrderItem extends StatelessWidget {
   final String price;
   final String user;
   final String time;
+  final int id;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Get.bottomSheet(BottomSheet(
-          image: image,
-          title: title,
-          quantity: quantity,
-          note: note,
-          price: price,
-          user: user,
-          time: time,
-        ));
+            image: image,
+            title: title,
+            quantity: quantity,
+            note: note,
+            price: price,
+            user: user,
+            time: time,
+            id: id));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -91,6 +97,7 @@ class BottomSheet extends StatelessWidget {
     this.price,
     this.user,
     this.time,
+    this.id,
   }) : super(key: key);
   final String image;
   final String title;
@@ -99,10 +106,14 @@ class BottomSheet extends StatelessWidget {
   final String price;
   final String user;
   final String time;
+  final int id;
   @override
   Widget build(BuildContext context) {
+    OrderItemController controller = Get.put(OrderItemController());
+    controller.updateOrderItemID(id);
+
     return Container(
-      height: Get.height / 3,
+      height: Get.height * 0.4,
       padding: EdgeInsets.all(kPadding),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -213,7 +224,34 @@ class BottomSheet extends StatelessWidget {
                     fontWeight: FontWeight.w500),
               )
             ],
-          ))
+          )),
+          SizedBox(
+            height: kPadding,
+          ),
+          BtnDeleteWidget(onTap: () {
+            controller.deleteOrderItem();
+          }, child: Obx(() {
+            if (controller.isDataProcessing.value) {
+              return Container(
+                width: kIconSize,
+                height: kIconSize,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              );
+            } else {
+              if (controller.isDataError.value) {
+                Fluttertoast.showToast(msg: controller.dataError.value);
+                return BtnTextWhiteWidget(
+                  text: 'Remove',
+                );
+              } else {
+                return BtnTextWhiteWidget(
+                  text: 'Remove',
+                );
+              }
+            }
+          }))
         ],
       ),
     );

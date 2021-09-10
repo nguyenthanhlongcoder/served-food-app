@@ -15,9 +15,9 @@ class OrderProvider extends GetConnect {
     }
   }
 
-  Future<dynamic> getTableDetail(String id) async {
+  Future<dynamic> getOrderDetail(String id) async {
     try {
-      final response = await get(GetRequestUrl.TABLE_DETAIL + id);
+      final response = await get(GetRequestUrl.ORDER_DETAIL + id);
       if (response.status.hasError) {
         return Future.error(response.statusText);
       } else {
@@ -28,9 +28,9 @@ class OrderProvider extends GetConnect {
     }
   }
 
-  Future<dynamic> getOrderDetail(String id) async {
+  Future<dynamic> createOrder(dynamic body) async {
     try {
-      final response = await get(GetRequestUrl.ORDER_DETAIL + id);
+      final response = await post(GetRequestUrl.CREATE_ORDER, body);
       if (response.status.hasError) {
         return Future.error(response.statusText);
       } else {

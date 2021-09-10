@@ -7,6 +7,7 @@ import 'package:served_food/app/common/app_styles/app_text_styles.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
 import 'package:served_food/app/common/app_widgets/gradient_btn_widget.dart';
 import 'package:served_food/app/modules/login/controllers/login_controller.dart';
+import 'package:served_food/app/modules/welcome/controllers/welcome_controller.dart';
 
 class LoginClipper extends CustomClipper<Path> {
   // 第一个点
@@ -154,6 +155,8 @@ class BackIcon extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pop(context);
+        WelcomeController controller = Get.put(WelcomeController());
+        controller.isLoading(false);
       },
       child: Container(
         width: kIconBoxSize,

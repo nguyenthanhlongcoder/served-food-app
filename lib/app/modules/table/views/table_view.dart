@@ -119,10 +119,7 @@ class TableView extends StatelessWidget {
                                     )),
                                 FocusedMenuItem(
                                     title: Text('Đặt Lại'),
-                                    onPressed: () async {
-                                      SharedPreferences pref =
-                                          await SharedPreferences.getInstance();
-                                      pref.clear();
+                                    onPressed: () {
                                       controller.resetTable(data[index]);
                                     },
                                     trailingIcon: Icon(

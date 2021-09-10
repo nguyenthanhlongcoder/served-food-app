@@ -1,3 +1,5 @@
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -12,12 +14,12 @@ import 'package:served_food/app/modules/order/controllers/order_controller.dart'
 import 'package:served_food/app/modules/order/controllers/shopping_cart_controller.dart';
 import 'package:served_food/app/modules/order/widgets/cart_item.dart';
 import 'package:served_food/app/modules/order/widgets/order_clipper.dart';
-import 'package:served_food/app/modules/order/widgets/order_item.dart';
 import 'package:served_food/app/routes/app_routes.dart';
 
-class OrderView extends GetView<OrderController> {
+class OrderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    OrderController controller = Get.put(OrderController());
     controller.updateTableID(Get.arguments['id'].toString());
     return Scaffold(
       appBar: AppBar(
@@ -60,11 +62,11 @@ class OrderView extends GetView<OrderController> {
             top: kPadding,
             child: Column(
               children: [
-                OrderPriceComponent(),
+                OrderPriceComponent(controller: controller),
                 SizedBox(
                   height: kPadding,
                 ),
-                OrderItemComponent()
+                OrderItemComponent(controller: controller)
               ],
             ),
           ),
@@ -73,8 +75,9 @@ class OrderView extends GetView<OrderController> {
               child: Row(
                 children: [
                   Container(
-                    width: Get.width - 48 - kPadding,
-                    padding: const EdgeInsets.all(kPadding),
+                    width: Get.width - 48 - kPadding * 2,
+                    padding: const EdgeInsets.only(
+                        top: kPadding, bottom: kPadding, left: kPadding),
                     child: GradientBtnWidget(
                       child: BtnTextWhiteWidget(
                         text: 'Checkout',
@@ -82,24 +85,36 @@ class OrderView extends GetView<OrderController> {
                       onTap: () {},
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
+                  BouncingWidget(
+                    duration: Duration(milliseconds: 100),
+                    scaleFactor: 1.5,
+                    onPressed: () {
                       Get.bottomSheet(ShoppingCartView(
                         keyOrder: controller.order.value.id.toString(),
+                        arguments: Get.arguments,
                       ));
                     },
-                    child: Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                          color: kBtnColorEnd,
-                          borderRadius: BorderRadius.all(Radius.circular(48))),
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
+                    child: AvatarGlow(
+                      glowColor: kBtnColorStart,
+                      endRadius: 40.0,
+                      duration: Duration(milliseconds: 1000),
+                      repeat: true,
+                      showTwoGlows: true,
+                      repeatPauseDuration: Duration(milliseconds: 100),
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                            color: kBtnColorEnd,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(48))),
+                        child: Icon(
+                          Icons.shopping_cart,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               )),
         ],
@@ -110,8 +125,9 @@ class OrderView extends GetView<OrderController> {
 
 class ShoppingCartView extends StatelessWidget {
   final String keyOrder;
-
-  const ShoppingCartView({Key key, this.keyOrder}) : super(key: key);
+  final dynamic arguments;
+  const ShoppingCartView({Key key, this.keyOrder, this.arguments})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +155,8 @@ class ShoppingCartView extends StatelessWidget {
                     ListView.separated(
                         itemBuilder: (context, index) {
                           return CartItem(
+                            controller: controller,
+                            index: index,
                             title: controller.cartItems[index].title,
                             note: controller.cartItems[index].note,
                             image: controller.cartItems[index].image,
@@ -155,14 +173,23 @@ class ShoppingCartView extends StatelessWidget {
                     Positioned(
                         bottom: 0,
                         width: Get.width - kPadding * 2,
-                        child: GradientBtnWidget(
-                          onTap: () {
-                            controller.addOrderItem();
-                          },
-                          child: BtnTextWhiteWidget(
-                            text: 'Confirm',
-                          ),
-                        ))
+                        child: GradientBtnWidget(onTap: () {
+                          controller.addOrder(arguments);
+                        }, child: Obx(() {
+                          if (controller.isDataProcessing.value) {
+                            return Container(
+                              height: kIconSize,
+                              width: kIconSize,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            );
+                          } else {
+                            return BtnTextWhiteWidget(
+                              text: 'Confirm',
+                            );
+                          }
+                        })))
                   ])
                 : Center(
                     child: Text(
