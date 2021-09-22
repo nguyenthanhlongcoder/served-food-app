@@ -1,12 +1,12 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:served_food/app/common/app_datas/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
-  static const ID_KEY = 'id';
   static const EXPIRY_KEY = 'expiry';
-  Future<void> persistUser(String id, String expiry) async {
+  Future<void> persistExpiry(String expiry) async {
     const FlutterSecureStorage storage = FlutterSecureStorage();
     try {
-      await storage.write(key: ID_KEY, value: id);
       await storage.write(key: EXPIRY_KEY, value: expiry);
       return true;
     } on Exception catch (e) {
@@ -19,6 +19,8 @@ class UserRepository {
     const FlutterSecureStorage storage = FlutterSecureStorage();
     try {
       await storage.deleteAll();
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.clear();
       return true;
     } on Exception catch (e) {
       print(
@@ -28,26 +30,13 @@ class UserRepository {
   }
 
   Future<bool> hasUser() async {
-    const FlutterSecureStorage storage = FlutterSecureStorage();
-
-    final all = await storage.readAll();
-
-    if (all != null) {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String userString = pref.getString('user');
+    if (userString == null) {
       return true;
+    } else {
+      return false;
     }
-    return false;
-  }
-
-  Future<String> fetchUserID() async {
-    const FlutterSecureStorage storage = FlutterSecureStorage();
-    Map<String, String> all = await storage.readAll();
-    String id = '';
-    for (var item in all.entries) {
-      if (item.key == ID_KEY) {
-        id = item.value;
-      }
-    }
-    return id;
   }
 
   Future<String> fetchExpiry() async {
@@ -60,5 +49,20 @@ class UserRepository {
       }
     }
     return expiry;
+  }
+
+  Future<void> setUser(UserModel user) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    final String encodedUser = UserModel.encode(user);
+
+    pref.setString('user', encodedUser);
+  }
+
+  Future<UserModel> getUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final String userString = await pref.getString('user');
+    final UserModel user = userModelFromJson(userString);
+    return user;
   }
 }

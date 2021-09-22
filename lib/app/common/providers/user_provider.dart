@@ -8,6 +8,7 @@ class UserProvider extends GetConnect {
       if (response.status.hasError) {
         return Future.error(response.statusText);
       } else {
+        print(response.body);
         return response.body;
       }
     } catch (e) {

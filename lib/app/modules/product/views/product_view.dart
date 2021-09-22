@@ -10,17 +10,31 @@ import 'package:served_food/app/common/app_widgets/gradient_btn_widget.dart';
 import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/product/components/product_appbar.dart';
 import 'package:served_food/app/modules/product/components/product_description.dart';
+import 'package:served_food/app/modules/product/components/product_extra_component.dart';
 import 'package:served_food/app/modules/product/components/product_prices.dart';
 import 'package:served_food/app/modules/product/components/product_quantity.dart';
 import 'package:served_food/app/modules/product/components/product_title.dart';
 import 'package:served_food/app/modules/product/components/product_total_price.dart';
+import 'package:served_food/app/modules/product/components/product_variations.dart';
 import 'package:served_food/app/modules/product/controllers/product_controller.dart';
 
-class ProductView extends StatelessWidget {
+class ProductView extends StatefulWidget {
+  @override
+  ProductViewState createState() {
+    return ProductViewState();
+  }
+}
+
+class ProductViewState extends State<ProductView> {
+  ProductController controller;
+  @override
+  void initState() {
+    controller = Get.put(ProductController());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ProductController controller = Get.put(ProductController());
-    controller.updateID(Get.arguments.toString());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -72,7 +86,19 @@ class ProductView extends StatelessWidget {
                       SizedBox(
                         height: kPadding * 2,
                       ),
+                      controller.product.value.variations.length > 1
+                          ? ProductVariations(
+                              controller: controller,
+                              productVariationOption:
+                                  controller.productVariationOption.value)
+                          : SizedBox(
+                              height: 0,
+                            ),
                       ProductQuantity(controller: controller),
+                      SizedBox(
+                        height: kPadding * 2,
+                      ),
+                      ProductExtraComponent(),
                       SizedBox(
                         height: kPadding * 2,
                       ),
@@ -118,7 +144,7 @@ class ProductView extends StatelessWidget {
                             text: 'Add to table',
                           );
                         }
-                      }))
+                      })),
                     ],
                   ),
                 ),

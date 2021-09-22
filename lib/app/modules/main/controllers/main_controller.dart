@@ -20,24 +20,27 @@ class MainController extends GetxController {
   FirebaseMessaging messaging;
   String deviceName, deviceID;
   UserRepository userRepository;
+  GetRequestUrl getRequestUrl;
   @override
   void onInit() async {
     super.onInit();
+    getRequestUrl = new GetRequestUrl();
     userRepository = new UserRepository();
     pageController = PageController();
     Firebase.initializeApp().then((value) {
       messaging = FirebaseMessaging.instance;
       messaging.getToken().then((value) async {
-        print('FCM device token: ' + value);
         String registrationToken = value;
         DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
         if (Platform.isAndroid) {
           AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
           deviceName = androidInfo.model;
           deviceID = androidInfo.androidId;
-          userRepository.fetchUserID().then((value) async {
-            if (value != null) {
-              var response = await new ApiProvider().post(
+          userRepository.getUser().then((value) async {
+            var response = await new ApiProvider().get(
+                getRequestUrl.getFCMDeviceUrl(value.id.toString(), deviceID));
+            if (response.length == 0) {
+              new ApiProvider().post(
                   GetRequestUrl.FCM_DEVICES,
                   json.encode({
                     "name": deviceName,
@@ -45,11 +48,8 @@ class MainController extends GetxController {
                     "device_id": deviceID,
                     "registration_token": registrationToken,
                     "type": "android",
-                    "user": value
+                    "user": value.id
                   }));
-              if (response != null) {
-                print(response);
-              }
             }
           });
         }

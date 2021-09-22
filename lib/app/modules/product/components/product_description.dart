@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:served_food/app/common/app_datas/product_model.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/app_widgets/label_item.dart';
-import 'package:served_food/app/modules/product/models/product_model.dart';
 
 class ProductDescription extends StatelessWidget {
   const ProductDescription({
@@ -33,10 +33,10 @@ class ProductDescription extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(product.label.length, (index) {
+            children: List.generate(product.labels.length, (index) {
               return LabelItem(
-                color: product.label[index].backgroundColor,
-                label: product.label[index].name,
+                color: product.labels[index].backgroundColor,
+                label: product.labels[index].name,
               );
             }),
           ),

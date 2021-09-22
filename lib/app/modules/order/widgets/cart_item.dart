@@ -2,10 +2,8 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
-import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/order/controllers/shopping_cart_controller.dart';
 import 'package:served_food/app/modules/order/widgets/cart_item_header.dart';
-import 'package:served_food/app/modules/order/widgets/order_item_header.dart';
 import 'package:served_food/app/modules/order/widgets/order_item_image.dart';
 
 class CartItem extends StatelessWidget {
@@ -18,6 +16,7 @@ class CartItem extends StatelessWidget {
     this.price,
     this.index,
     this.controller,
+    this.extras,
   }) : super(key: key);
   final String image;
   final String title;
@@ -26,6 +25,7 @@ class CartItem extends StatelessWidget {
   final String price;
   final int index;
   final ShoppingCartController controller;
+  final String extras;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -56,6 +56,22 @@ class CartItem extends StatelessWidget {
                       fontWeight: FontWeight.w400),
                 ),
               ),
+              RichText(
+                  text: TextSpan(
+                      text: 'Extras: ',
+                      style: kBodyTextStyle.copyWith(
+                          color: Colors.black,
+                          fontSize: kBodyTextSize,
+                          fontWeight: FontWeight.bold),
+                      children: [
+                    TextSpan(
+                      text: extras,
+                      style: kBodyTextStyle.copyWith(
+                          color: kBtnColorStart,
+                          fontSize: kBodyTextSize,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ])),
               Text(
                 price + ' VNĐ',
                 style: kBodyTextStyle.copyWith(

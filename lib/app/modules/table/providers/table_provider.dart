@@ -22,6 +22,21 @@ class TableProvider extends GetConnect {
     }
   }
 
+  Future<List<dynamic>> getTabless() async {
+    try {
+      final response = await get(GetRequestUrl.TABLES);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        print(response.statusCode.toString());
+        throw Exception(
+            'Failed Load Data with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
   Future<dynamic> updateTable(String id, dynamic body) async {
     try {
       final response = await put(GetRequestUrl.TABLE_DETAIL + id, body);

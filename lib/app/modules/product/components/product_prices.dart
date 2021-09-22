@@ -31,7 +31,7 @@ class ProductPricesState extends State<ProductPrices> {
         SizedBox(height: kPadding),
         Column(
             children: List.generate(
-                controller.product.value.productVariationOption.length,
+                controller.product.value.productVariationOptions.length,
                 (index) {
           return Row(
             children: [
@@ -43,9 +43,16 @@ class ProductPricesState extends State<ProductPrices> {
                     setState(() {
                       radioValue = controller.productVaritionGroupValue[index];
                       controller.setProductPrice(controller
-                          .product.value.productVariationOption[index].price);
-                      controller.setProductVariationOption(controller
-                          .product.value.productVariationOption[index].id);
+                          .product.value.productVariationOptions[index].price);
+                      controller.setProductVariationOption(
+                          controller
+                              .product.value.productVariationOptions[index].id,
+                          controller
+                              .product
+                              .value
+                              .productVariationOptions[index]
+                              .variationOptions[0]
+                              .id);
                       controller.setProductTotalPrice();
                     });
                   }),
@@ -54,8 +61,8 @@ class ProductPricesState extends State<ProductPrices> {
                       text: controller
                               .product
                               .value
-                              .productVariationOption[index]
-                              .variationOption
+                              .productVariationOptions[index]
+                              .variationOptions[0]
                               .name +
                           ': ',
                       style: kBodyTextStyle.copyWith(
@@ -65,7 +72,7 @@ class ProductPricesState extends State<ProductPrices> {
                       children: [
                     TextSpan(
                         text: formatNumber(controller.product.value
-                                .productVariationOption[index].price) +
+                                .productVariationOptions[index].price) +
                             ' VNĐ',
                         style: kBodyTextStyle.copyWith(
                             color: kBtnColorStart,

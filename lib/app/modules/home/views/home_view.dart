@@ -50,7 +50,7 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: kPadding * 1.5,
                   ),
-                  HomeMessageList(),
+                  // HomeMessageList(),
                 ],
               ),
             ),
@@ -73,7 +73,7 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: kPadding * 1.5,
                   ),
-                  PromotionSlider(),
+                  // PromotionSlider(),
                 ],
               ),
             ),

@@ -1,17 +1,15 @@
-import 'dart:convert';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_datas/user_repository.dart';
 import 'package:served_food/app/modules/order/controllers/order_controller.dart';
-import 'package:served_food/app/modules/order/models/user_model.dart';
+import 'package:served_food/app/common/app_datas/user_model.dart';
 import 'package:served_food/app/modules/order/providers/order_item_provider.dart';
-import 'package:served_food/app/modules/order/providers/user_provider.dart';
 
 class OrderItemController extends GetxController {
   var isDataProcessing = false.obs;
   var isDataError = false.obs;
   var dataError = ''.obs;
+  Map<String, dynamic> body;
   var orderItemID = 0.obs;
   var user = new UserModel().obs;
   @override
@@ -20,28 +18,22 @@ class OrderItemController extends GetxController {
     getUser();
   }
 
-  void updateOrderItemID(int id) {
-    orderItemID.value = id;
+  void updateOrderItem(int orderID, int orderItemID, int user,
+      int productVariationOption, List<int> orderItemVariationOptions) {
+    this.orderItemID.value = orderItemID;
+    body = {
+      'order': orderID,
+      'user': user,
+      'product_variation_option': productVariationOption,
+      'order_item_variation_options': orderItemVariationOptions,
+      'is_active': false
+    };
   }
 
   void getUser() {
-    UserRepository().fetchUserID().then((value) {
-      if (value != null) {
-        try {
-          UserProvider().getUserDetail(value).then((response) {
-            print(response);
-            user.value = UserModel.fromJson(response);
-            if (user.value != null) {
-              print(user.value.username);
-            }
-            isDataError(false);
-          });
-        } catch (e) {
-          dataError(e);
-          isDataError(true);
-        }
-      } else {
-        Fluttertoast.showToast(msg: 'Have no user');
+    UserRepository().getUser().then((user) {
+      if (user != null) {
+        this.user.value = user;
       }
     });
   }
@@ -50,7 +42,8 @@ class OrderItemController extends GetxController {
     if (user.value.isSuperuser) {
       try {
         isDataProcessing(true);
-        OrderItemProvider().deleteOrderItem(orderItemID.value).then((response) {
+        OrderItemProvider().deleteOrderItem(this.orderItemID.value, body).then(
+            (response) {
           isDataProcessing(false);
 
           isDataError(false);

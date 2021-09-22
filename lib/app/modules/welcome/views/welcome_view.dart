@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/app_colors.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
 import 'package:served_food/app/common/app_widgets/gradient_btn_widget.dart';
+import 'package:served_food/app/common/providers/log_out.dart';
 import 'package:served_food/app/modules/welcome/controllers/welcome_controller.dart';
 import 'package:served_food/app/modules/welcome/widgets/welcome_widget.dart';
-import 'package:served_food/app/routes/app_routes.dart';
 
 class WelcomeView extends GetView<WelcomeController> {
   @override
@@ -16,6 +16,9 @@ class WelcomeView extends GetView<WelcomeController> {
         children: [
           WelcomeHeaderWidget(),
           GradientBtnWidget(
+            onTap: () {
+              LogOut().logOut();
+            },
             width: 208,
             child: BtnTextWhiteWidget(
               text: 'Sign up',
@@ -25,8 +28,7 @@ class WelcomeView extends GetView<WelcomeController> {
           GestureDetector(
             child: LoginBtnWidget(),
             onTap: () {
-              controller.isLoading(true);
-              Get.toNamed(AppRoutes.LOGIN);
+              controller.routeToLogin();
             },
           ),
           SizedBox(height: 16),

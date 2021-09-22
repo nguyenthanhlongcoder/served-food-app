@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:served_food/app/modules/browse/providers/category_product_provider.dart';
 import 'package:served_food/app/modules/browse/providers/filter_product_provider.dart';
 
 class FilterProductsController extends GetxController {
@@ -28,7 +27,6 @@ class FilterProductsController extends GetxController {
         isDataProcessing(false);
 
         lstProducts.assignAll(response);
-
         isDataError(false);
       }, onError: (error) {
         isDataProcessing(false);

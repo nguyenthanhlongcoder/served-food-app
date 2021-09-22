@@ -3,7 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
-import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/order/controllers/order_item_controller.dart';
 import 'package:served_food/app/modules/order/widgets/btn_delete_widget.dart';
 import 'package:served_food/app/modules/order/widgets/order_item_header.dart';
@@ -20,6 +19,11 @@ class OrderItem extends StatelessWidget {
     this.user,
     this.time,
     this.id,
+    this.extras,
+    this.orderID,
+    this.productVariationOptionID,
+    this.userID,
+    this.orderItemVariationOptionsID,
   }) : super(key: key);
   final String image;
   final String title;
@@ -29,10 +33,18 @@ class OrderItem extends StatelessWidget {
   final String user;
   final String time;
   final int id;
+  final String extras;
+  final int orderID;
+  final int productVariationOptionID;
+  final int userID;
+  final List<int> orderItemVariationOptionsID;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        OrderItemController controller = Get.put(OrderItemController());
+        controller.updateOrderItem(orderID, id, userID,
+            productVariationOptionID, orderItemVariationOptionsID);
         Get.bottomSheet(BottomSheet(
             image: image,
             title: title,
@@ -41,6 +53,7 @@ class OrderItem extends StatelessWidget {
             price: price,
             user: user,
             time: time,
+            extras: extras,
             id: id));
       },
       child: Row(
@@ -71,6 +84,22 @@ class OrderItem extends StatelessWidget {
                         fontWeight: FontWeight.w400),
                   ),
                 ),
+                RichText(
+                    text: TextSpan(
+                        text: 'Extras: ',
+                        style: kBodyTextStyle.copyWith(
+                            color: Colors.black,
+                            fontSize: kBodyTextSize,
+                            fontWeight: FontWeight.bold),
+                        children: [
+                      TextSpan(
+                        text: extras,
+                        style: kBodyTextStyle.copyWith(
+                            color: kBtnColorStart,
+                            fontSize: kBodyTextSize,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ])),
                 Text(
                   price + ' VNĐ',
                   style: kBodyTextStyle.copyWith(
@@ -98,6 +127,7 @@ class BottomSheet extends StatelessWidget {
     this.user,
     this.time,
     this.id,
+    this.extras,
   }) : super(key: key);
   final String image;
   final String title;
@@ -107,13 +137,13 @@ class BottomSheet extends StatelessWidget {
   final String user;
   final String time;
   final int id;
+  final String extras;
   @override
   Widget build(BuildContext context) {
     OrderItemController controller = Get.put(OrderItemController());
-    controller.updateOrderItemID(id);
 
     return Container(
-      height: Get.height * 0.4,
+      height: Get.height * 0.45,
       padding: EdgeInsets.all(kPadding),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -210,11 +240,31 @@ class BottomSheet extends StatelessWidget {
           ),
           RichText(
               text: TextSpan(
+            text: 'Extras: ',
+            style: kBodyTextStyle.copyWith(
+                color: Colors.black,
+                fontSize: kSubtitleTextSize,
+                fontWeight: FontWeight.bold),
+            children: [
+              TextSpan(
+                text: extras,
+                style: kBodyTextStyle.copyWith(
+                    color: kBtnColorStart,
+                    fontSize: kSubtitleTextSize,
+                    fontWeight: FontWeight.w500),
+              )
+            ],
+          )),
+          SizedBox(
+            height: kPadding,
+          ),
+          RichText(
+              text: TextSpan(
             text: 'Price: ',
             style: kBodyTextStyle.copyWith(
                 color: Colors.black,
                 fontSize: kSubtitleTextSize,
-                fontWeight: FontWeight.w500),
+                fontWeight: FontWeight.bold),
             children: [
               TextSpan(
                 text: price + ' VNĐ',

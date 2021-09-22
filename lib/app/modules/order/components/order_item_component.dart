@@ -59,34 +59,67 @@ class OrderItemComponent extends StatelessWidget {
           } else {
             if (controller.order.value != null) {
               return ListView.separated(
-                itemCount: controller.order.value.orderItem != null
-                    ? controller.order.value.orderItem.length
+                itemCount: controller.order.value.orderItems != null
+                    ? controller.order.value.orderItems.length
                     : 0,
                 itemBuilder: (context, index) {
-                  return OrderItem(
-                    id: controller.order.value.orderItem[index].id,
-                    image:
-                        controller.order.value.orderItem[index].product.image,
-                    title:
-                        controller.order.value.orderItem[index].product.name +
-                            ' - ' +
-                            controller.order.value.orderItem[index]
-                                .productVariationOption.variationOption.name,
-                    quantity: controller.order.value.orderItem[index].quantity
-                        .toString(),
-                    note: controller.order.value.orderItem[index].note,
-                    price: formatNumber(
-                        controller.order.value.orderItem[index].orderItemPrice),
-                    user: controller
-                            .order.value.orderItem[index].user.lastName +
-                        ' ' +
-                        controller.order.value.orderItem[index].user.firstName,
-                    time: controller.order.value.orderItem[index].createdAt
-                        .toString(),
-                  );
+                  String variationOptions = '';
+                  for (var item in controller.order.value.orderItems[index]
+                      .orderItemVariationOptions) {
+                    variationOptions += ' - ${item.name}';
+                  }
+                  String extras = '';
+                  for (var item
+                      in controller.order.value.orderItems[index].extras) {
+                    extras += ' ${item.name}';
+                  }
+                  List<int> orderItemVariationOptions = [];
+                  for (var item in controller.order.value.orderItems[index]
+                      .orderItemVariationOptions) {
+                    orderItemVariationOptions.add(item.id);
+                  }
+                  if (controller.order.value.orderItems[index].isActive) {
+                    return OrderItem(
+                        orderID: controller.order.value.id,
+                        userID:
+                            controller.order.value.orderItems[index].user.id,
+                        productVariationOptionID: controller.order.value
+                            .orderItems[index].productVariationOption.id,
+                        orderItemVariationOptionsID: orderItemVariationOptions,
+                        id: controller.order.value.orderItems[index].id,
+                        image: controller
+                            .order.value.orderItems[index].product.image,
+                        title: controller
+                                .order.value.orderItems[index].product.name +
+                            variationOptions,
+                        quantity: controller
+                            .order.value.orderItems[index].quantity
+                            .toString(),
+                        note: controller.order.value.orderItems[index].note,
+                        price: formatNumber(controller
+                            .order.value.orderItems[index].orderItemPrice),
+                        user: controller
+                                .order.value.orderItems[index].user.lastName +
+                            ' ' +
+                            controller
+                                .order.value.orderItems[index].user.firstName,
+                        time: controller.order.value.orderItems[index].createdAt
+                            .toString(),
+                        extras: extras);
+                  } else {
+                    return SizedBox(
+                      height: 0,
+                    );
+                  }
                 },
                 separatorBuilder: (context, index) {
-                  return Divider();
+                  if (controller.order.value.orderItems[index].isActive) {
+                    return Divider();
+                  } else {
+                    return SizedBox(
+                      height: 0,
+                    );
+                  }
                 },
               );
             } else {

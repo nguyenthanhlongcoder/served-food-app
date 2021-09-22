@@ -16,11 +16,9 @@ import 'package:served_food/app/modules/order/widgets/cart_item.dart';
 import 'package:served_food/app/modules/order/widgets/order_clipper.dart';
 import 'package:served_food/app/routes/app_routes.dart';
 
-class OrderView extends StatelessWidget {
+class OrderView extends GetView<OrderController> {
   @override
   Widget build(BuildContext context) {
-    OrderController controller = Get.put(OrderController());
-    controller.updateTableID(Get.arguments['id'].toString());
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -40,12 +38,15 @@ class OrderView extends StatelessWidget {
               onPressed: () {
                 Get.toNamed(AppRoutes.BROWSE);
               },
-              child: Text(
-                'Order',
-                style: kBodyTextStyle.copyWith(
-                    fontSize: kSubtitleTextSize,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400),
+              child: Padding(
+                padding: const EdgeInsets.only(right: kPadding),
+                child: Text(
+                  'Order',
+                  style: kBodyTextStyle.copyWith(
+                      fontSize: kSubtitleTextSize,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400),
+                ),
               ))
         ],
         backgroundColor: kBtnColorStart,
@@ -90,7 +91,6 @@ class OrderView extends StatelessWidget {
                     scaleFactor: 1.5,
                     onPressed: () {
                       Get.bottomSheet(ShoppingCartView(
-                        keyOrder: controller.order.value.id.toString(),
                         arguments: Get.arguments,
                       ));
                     },
@@ -124,15 +124,12 @@ class OrderView extends StatelessWidget {
 }
 
 class ShoppingCartView extends StatelessWidget {
-  final String keyOrder;
   final dynamic arguments;
-  const ShoppingCartView({Key key, this.keyOrder, this.arguments})
-      : super(key: key);
+  const ShoppingCartView({Key key, this.arguments}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ShoppingCartController controller = Get.put(ShoppingCartController());
-    controller.updateKey(keyOrder);
     return Container(
         height: Get.height * 0.7,
         padding: EdgeInsets.all(kPadding),
@@ -154,17 +151,21 @@ class ShoppingCartView extends StatelessWidget {
                 ? Stack(children: [
                     ListView.separated(
                         itemBuilder: (context, index) {
+                          String extras = '';
+                          for (var item in controller.cartItems[index].extras) {
+                            extras = extras + ' $item';
+                          }
                           return CartItem(
-                            controller: controller,
-                            index: index,
-                            title: controller.cartItems[index].title,
-                            note: controller.cartItems[index].note,
-                            image: controller.cartItems[index].image,
-                            quantity:
-                                controller.cartItems[index].quantity.toString(),
-                            price: formatNumber(
-                                controller.cartItems[index].orderItemPrice),
-                          );
+                              controller: controller,
+                              index: index,
+                              title: controller.cartItems[index].title,
+                              note: controller.cartItems[index].note,
+                              image: controller.cartItems[index].image,
+                              quantity: controller.cartItems[index].quantity
+                                  .toString(),
+                              price: formatNumber(
+                                  controller.cartItems[index].orderItemPrice),
+                              extras: extras);
                         },
                         separatorBuilder: (context, index) {
                           return Divider();

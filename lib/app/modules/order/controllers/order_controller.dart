@@ -15,9 +15,9 @@ class OrderController extends GetxController {
   var tableID = ''.obs;
   var order = new OrderModel().obs;
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
-    // getOrderDetail();
+    updateTableID(Get.arguments['id'].toString());
   }
 
   void backToTable(var arguments) async {

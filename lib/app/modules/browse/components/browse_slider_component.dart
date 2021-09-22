@@ -25,6 +25,8 @@ class BrowseSliderComponent extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(bottom: kPadding),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,6 +83,7 @@ class BrowseSliderComponent extends StatelessWidget {
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: List.generate(data.length, (index) {
                       return ProductItem(
                         id: data[index]['id'].toString(),
@@ -88,9 +91,9 @@ class BrowseSliderComponent extends StatelessWidget {
                         image: data[index]['image'],
                         description: data[index]['description'],
                         price: formatNumber(data[index]
-                                ['product_variation_option'][0]['price']) +
+                                ['product_variation_options'][0]['price']) +
                             ' VNĐ',
-                        labels: data[index]['label'],
+                        labels: data[index]['labels'],
                       );
                     }),
                   ),

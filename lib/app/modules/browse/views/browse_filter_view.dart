@@ -8,10 +8,9 @@ import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/browse/components/browse_filter_appbar.dart';
 import 'package:served_food/app/modules/browse/controllers/filter_products_controller.dart';
 
-class BrowseFilterView extends StatelessWidget {
+class BrowseFilterView extends GetView<FilterProductsController> {
   @override
   Widget build(BuildContext context) {
-    FilterProductsController controller = Get.put(FilterProductsController());
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 120,
@@ -25,8 +24,9 @@ class BrowseFilterView extends StatelessWidget {
           child: Obx(() {
             if (controller.isDataProcessing.value) {
               return Center(
-                child: SpinKitWave(
+                child: SpinKitFadingFour(
                   color: kBtnColorStart,
+                  size: 50,
                 ),
               );
             } else {
@@ -43,7 +43,7 @@ class BrowseFilterView extends StatelessWidget {
               } else {
                 List<dynamic> data = [];
                 if (Get.arguments[0] == 0) {
-                  data.addAll(controller.lstProducts);
+                  data.assignAll(controller.lstProducts);
                 } else {
                   for (var product in controller.lstProducts) {
                     if (product['category']['id'].toString() ==
@@ -63,7 +63,7 @@ class BrowseFilterView extends StatelessWidget {
                           image: data[index]['image'],
                           description: data[index]['description'],
                           price: formatNumber(data[index]
-                                  ['product_variation_option'][0]['price']) +
+                                  ['product_variation_options'][0]['price']) +
                               ' VNĐ',
                           id: data[index]['id'].toString());
                     }));

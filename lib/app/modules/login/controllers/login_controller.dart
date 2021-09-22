@@ -4,10 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_datas/get_request_url.dart';
+import 'package:served_food/app/common/app_datas/user_model.dart';
 import 'package:served_food/app/common/app_datas/user_repository.dart';
 import 'package:served_food/app/common/http/api_provider.dart';
 import 'package:served_food/app/common/providers/log_out.dart';
+import 'package:served_food/app/common/providers/user_provider.dart';
 import 'package:served_food/app/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -15,26 +18,12 @@ class LoginController extends GetxController {
   var username = '';
   var password = '';
   UserRepository userRepository = new UserRepository();
+  var user = new UserModel().obs;
   @override
   void onInit() {
     super.onInit();
     usernameController = TextEditingController();
     passwordController = TextEditingController();
-
-    if (userRepository.hasUser() != null) {
-      userRepository.fetchExpiry().then((value) {
-        String expiry = value.replaceAll('T', ' ');
-        DateTime expiryDateTime =
-            DateFormat("yyyy-MM-dd HH:mm:ss").parse(expiry);
-        if (expiryDateTime.isAfter(DateTime.now())) {
-          Get.offNamedUntil(AppRoutes.MAIN, (route) => false);
-        } else {
-          userRepository.deleteAll();
-        }
-      });
-    } else {
-      userRepository.deleteAll();
-    }
   }
 
   @override
@@ -50,25 +39,33 @@ class LoginController extends GetxController {
       var response = await new ApiProvider().post(
           GetRequestUrl.LOGIN,
           json.encode({
-            'username': usernameController.text,
+            'email': usernameController.text,
             'password': passwordController.text
           }));
       if (response != null) {
-        print('Login Sucess: ' + response['user']['username'].toString());
-        String id = response['user']['id'].toString();
-        String expiry = response['expiry'];
-        Get.offNamedUntil(AppRoutes.MAIN, (route) => false);
-        userRepository.persistUser(id, expiry);
+        String id = response['id'].toString();
+        String expiry = DateTime.now().add(Duration(days: 1)).toString();
+        UserProvider().getUserDetail(id).then((response) async {
+          if (response != null) {
+            user.value = UserModel.fromJson(response);
+            UserRepository().setUser(user.value);
+            UserRepository().persistExpiry(expiry);
+            Get.offNamedUntil(AppRoutes.MAIN, (route) => false);
 
-        Fluttertoast.showToast(
-          msg: 'Login Success',
-          toastLength: Toast.LENGTH_LONG,
-        );
+            Fluttertoast.showToast(
+              msg: 'Login Success',
+              toastLength: Toast.LENGTH_LONG,
+            );
+          } else {
+            Fluttertoast.showToast(
+              msg: response.toString(),
+              toastLength: Toast.LENGTH_LONG,
+            );
+          }
+        });
       } else {
         LogOut().logOut();
       }
-    } finally {
-      isLoading(false);
-    }
+    } finally {}
   }
 }
