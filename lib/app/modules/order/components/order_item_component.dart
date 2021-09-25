@@ -6,13 +6,29 @@ import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/order/controllers/order_controller.dart';
 import 'package:served_food/app/modules/order/widgets/order_item.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
-class OrderItemComponent extends StatelessWidget {
+class OrderItemComponent extends StatefulWidget {
   const OrderItemComponent({
     Key key,
     this.controller,
   }) : super(key: key);
   final OrderController controller;
+
+  @override
+  OrderItemComponentState createState() {
+    return OrderItemComponentState();
+  }
+}
+
+class OrderItemComponentState extends State<OrderItemComponent> {
+  bool isViewAll = false;
+  @override
+  void initState() {
+    isViewAll = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,14 +48,14 @@ class OrderItemComponent extends StatelessWidget {
             )
           ]),
       child: Obx(() {
-        if (controller.isDataProcessing.value) {
+        if (widget.controller.isDataProcessing.value) {
           return SpinKitFadingFour(
             color: kBtnColorStart,
             size: 50.0,
           );
         } else {
-          if (controller.isDataError.value) {
-            if (controller.dataError.value == 'Not Found') {
+          if (widget.controller.isDataError.value) {
+            if (widget.controller.dataError.value == 'Not Found') {
               return Center(
                 child: Text(
                   'Nothing',
@@ -52,75 +68,166 @@ class OrderItemComponent extends StatelessWidget {
             } else {
               return Center(child: FailureLoad(
                 onPressed: () {
-                  controller.getOrderDetail();
+                  widget.controller.getOrderDetail();
                 },
               ));
             }
           } else {
-            if (controller.order.value != null) {
-              return ListView.separated(
-                itemCount: controller.order.value.orderItems != null
-                    ? controller.order.value.orderItems.length
-                    : 0,
-                itemBuilder: (context, index) {
-                  String variationOptions = '';
-                  for (var item in controller.order.value.orderItems[index]
-                      .orderItemVariationOptions) {
-                    variationOptions += ' - ${item.name}';
-                  }
-                  String extras = '';
-                  for (var item
-                      in controller.order.value.orderItems[index].extras) {
-                    extras += ' ${item.name}';
-                  }
-                  List<int> orderItemVariationOptions = [];
-                  for (var item in controller.order.value.orderItems[index]
-                      .orderItemVariationOptions) {
-                    orderItemVariationOptions.add(item.id);
-                  }
-                  if (controller.order.value.orderItems[index].isActive) {
-                    return OrderItem(
-                        orderID: controller.order.value.id,
-                        userID:
-                            controller.order.value.orderItems[index].user.id,
-                        productVariationOptionID: controller.order.value
-                            .orderItems[index].productVariationOption.id,
-                        orderItemVariationOptionsID: orderItemVariationOptions,
-                        id: controller.order.value.orderItems[index].id,
-                        image: controller
-                            .order.value.orderItems[index].product.image,
-                        title: controller
-                                .order.value.orderItems[index].product.name +
-                            variationOptions,
-                        quantity: controller
-                            .order.value.orderItems[index].quantity
-                            .toString(),
-                        note: controller.order.value.orderItems[index].note,
-                        price: formatNumber(controller
-                            .order.value.orderItems[index].orderItemPrice),
-                        user: controller
-                                .order.value.orderItems[index].user.lastName +
-                            ' ' +
-                            controller
-                                .order.value.orderItems[index].user.firstName,
-                        time: controller.order.value.orderItems[index].createdAt
-                            .toString(),
-                        extras: extras);
-                  } else {
-                    return SizedBox(
-                      height: 0,
-                    );
-                  }
-                },
-                separatorBuilder: (context, index) {
-                  if (controller.order.value.orderItems[index].isActive) {
-                    return Divider();
-                  } else {
-                    return SizedBox(
-                      height: 0,
-                    );
-                  }
-                },
+            if (widget.controller.order.value != null) {
+              return Column(
+                children: [
+                  ToggleSwitch(
+                    minWidth: 90.0,
+                    initialLabelIndex: isViewAll ? 1 : 0,
+                    cornerRadius: 20.0,
+                    minHeight: 30,
+                    activeFgColor: Colors.white,
+                    inactiveBgColor: Colors.grey,
+                    inactiveFgColor: Colors.white,
+                    totalSwitches: 2,
+                    labels: ['Normal', 'All'],
+                    activeBgColors: [
+                      [Colors.green],
+                      [Colors.red]
+                    ],
+                    onToggle: (index) {
+                      setState(() {
+                        if (index == 0) {
+                          isViewAll = false;
+                        } else {
+                          isViewAll = true;
+                        }
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: kPadding,
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount:
+                          widget.controller.order.value.orderItems != null
+                              ? widget.controller.order.value.orderItems.length
+                              : 0,
+                      itemBuilder: (context, index) {
+                        String variationOptions = '';
+                        for (var item in widget.controller.order.value
+                            .orderItems[index].orderItemVariationOptions) {
+                          variationOptions += ' - ${item.name}';
+                        }
+                        String extras = '';
+                        for (var item in widget
+                            .controller.order.value.orderItems[index].extras) {
+                          extras += ' ${item.name}';
+                        }
+                        List<int> orderItemVariationOptions = [];
+                        for (var item in widget.controller.order.value
+                            .orderItems[index].orderItemVariationOptions) {
+                          orderItemVariationOptions.add(item.id);
+                        }
+                        if (widget.controller.order.value.orderItems[index]
+                            .isActive) {
+                          return OrderItem(
+                              orderID: widget.controller.order.value.id,
+                              userID: widget.controller.order.value
+                                  .orderItems[index].user.id,
+                              productVariationOptionID: widget
+                                  .controller
+                                  .order
+                                  .value
+                                  .orderItems[index]
+                                  .productVariationOption
+                                  .id,
+                              orderItemVariationOptionsID:
+                                  orderItemVariationOptions,
+                              id: widget
+                                  .controller.order.value.orderItems[index].id,
+                              image: widget.controller.order.value
+                                  .orderItems[index].product.image,
+                              title: widget.controller.order.value
+                                      .orderItems[index].product.name +
+                                  variationOptions,
+                              quantity: widget.controller.order.value
+                                  .orderItems[index].quantity
+                                  .toString(),
+                              note: widget.controller.order.value
+                                  .orderItems[index].note,
+                              price: formatNumber(widget.controller.order.value
+                                  .orderItems[index].orderItemPrice),
+                              user: widget.controller.order.value
+                                      .orderItems[index].user.lastName +
+                                  ' ' +
+                                  widget.controller.order.value
+                                      .orderItems[index].user.firstName,
+                              time: widget.controller.order.value.orderItems[index].createdAt.toString(),
+                              extras: extras,
+                              isActive: widget.controller.order.value.orderItems[index].isActive);
+                        } else {
+                          if (isViewAll) {
+                            return OrderItem(
+                                orderID: widget.controller.order.value.id,
+                                userID: widget.controller.order.value
+                                    .orderItems[index].user.id,
+                                productVariationOptionID: widget
+                                    .controller
+                                    .order
+                                    .value
+                                    .orderItems[index]
+                                    .productVariationOption
+                                    .id,
+                                orderItemVariationOptionsID:
+                                    orderItemVariationOptions,
+                                id: widget.controller.order.value
+                                    .orderItems[index].id,
+                                image: widget.controller.order.value
+                                    .orderItems[index].product.image,
+                                title: widget.controller.order.value
+                                        .orderItems[index].product.name +
+                                    variationOptions,
+                                quantity: widget.controller.order.value
+                                    .orderItems[index].quantity
+                                    .toString(),
+                                note: widget.controller.order.value
+                                    .orderItems[index].note,
+                                price: formatNumber(widget
+                                    .controller
+                                    .order
+                                    .value
+                                    .orderItems[index]
+                                    .orderItemPriceRecord),
+                                user: widget.controller.order.value
+                                        .orderItems[index].user.lastName +
+                                    ' ' +
+                                    widget.controller.order.value
+                                        .orderItems[index].user.firstName,
+                                time: widget.controller.order.value.orderItems[index].createdAt
+                                    .toString(),
+                                extras: extras,
+                                isActive: widget.controller.order.value.orderItems[index].isActive);
+                          } else {
+                            return SizedBox(
+                              height: 0,
+                            );
+                          }
+                        }
+                      },
+                      separatorBuilder: (context, index) {
+                        if (widget.controller.order.value.orderItems[index]
+                            .isActive) {
+                          return Divider();
+                        } else {
+                          if (isViewAll) {
+                            return Divider();
+                          } else {
+                            return SizedBox(
+                              height: 0,
+                            );
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                ],
               );
             } else {
               return Center(

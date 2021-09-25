@@ -35,8 +35,8 @@ class ProductDescription extends StatelessWidget {
           child: Row(
             children: List.generate(product.labels.length, (index) {
               return LabelItem(
-                color: product.labels[index].backgroundColor,
-                label: product.labels[index].name,
+                color: product.labels[index]['background_color'].toString(),
+                label: product.labels[index]['name'],
               );
             }),
           ),

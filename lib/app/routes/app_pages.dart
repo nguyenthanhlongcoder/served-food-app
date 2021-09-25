@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:served_food/app/modules/browse/views/browse_filter_view.dart';
 import 'package:served_food/app/modules/browse/views/browse_view.dart';
+import 'package:served_food/app/modules/checkout/views/checkout_view.dart';
+import 'package:served_food/app/modules/checkout/views/credit_card_view.dart';
 import 'package:served_food/app/modules/home/bindings/home_binding.dart';
 import 'package:served_food/app/modules/home/views/home_view.dart';
 import 'package:served_food/app/modules/main/bindings/main_binding.dart';
@@ -51,6 +53,8 @@ class AppPages {
     GetPage(
       name: AppRoutes.PRODUCT_DETAIL,
       page: () => new ProductView(),
-    )
+    ),
+    GetPage(name: AppRoutes.CHECKOUT, page: () => new CheckoutView()),
+    GetPage(name: AppRoutes.CREDIT_CARD, page: () => new CreditCardView())
   ];
 }

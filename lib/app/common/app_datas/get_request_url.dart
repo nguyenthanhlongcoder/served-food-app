@@ -15,6 +15,7 @@ class GetRequestUrl {
     return requestUrl;
   }
 
+  static const CANCEL_ORDER = '$DOMAIN/orders/create_order/';
   static const CREATE_ORDER_ITEM = '$DOMAIN/orders/create_order_item';
   static const ORDER_ITEMS = '$DOMAIN/orders/order_items?order=';
   static const TABLE_DETAIL = '$DOMAIN/tables/';
@@ -27,4 +28,5 @@ class GetRequestUrl {
   static const CREATE_ORDER = '$DOMAIN/orders/create_order';
   static const ORDER_ITEM_DETAIL = '$DOMAIN/orders/create_order_item/';
   static const EXTRAS = '$DOMAIN/products/extras';
+  static const CREATE_ORDER_DETAIL = '$DOMAIN/orders/create_order/';
 }

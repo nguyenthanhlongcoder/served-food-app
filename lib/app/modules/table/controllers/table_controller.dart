@@ -5,9 +5,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_datas/user_repository.dart';
-import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/app_datas/user_model.dart';
 import 'package:served_food/app/modules/order/controllers/order_controller.dart';
+import 'package:served_food/app/modules/order/models/order_model.dart';
+import 'package:served_food/app/modules/order/providers/order_provider.dart';
 import 'package:served_food/app/modules/table/providers/table_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:served_food/app/routes/app_routes.dart';
@@ -19,7 +20,9 @@ class TableController extends GetxController {
   var dataError = ''.obs;
   var lstTable = List<dynamic>.empty(growable: true).obs;
   var user = new UserModel().obs;
-
+  var order = new OrderModel().obs;
+  var tableID = 0.obs;
+  var isSwapProcessing = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -40,9 +43,10 @@ class TableController extends GetxController {
         'status': arguments['status']
       });
       try {
-        TableProvider()
-            .updateTable(arguments['id'].toString(), table)
-            .then((response) {}, onError: (e) {
+        TableProvider().updateTable(arguments['id'].toString(), table).then(
+            (response) {
+          getTabless();
+        }, onError: (e) {
           if (e == 'Not Found') {
             Fluttertoast.showToast(msg: 'Table not found');
           } else {
@@ -63,6 +67,58 @@ class TableController extends GetxController {
         this.user.value = user;
       }
     });
+  }
+
+  void swapOrder(int id) async {
+    isSwapProcessing(true);
+    // ignore: await_only_futures
+    await getOrderDetail(id.toString());
+    dynamic body = jsonEncode({'table': tableID.value});
+    try {
+      OrderProvider().updateOrder(order.value.id.toString(), body).then(
+          (response) {
+        if (response != null) {
+          getTabless();
+          Get.back();
+        } else {
+          Fluttertoast.showToast(msg: response.printError());
+        }
+      }, onError: (e) {
+        isSwapProcessing(false);
+
+        if (e == 'Not Found') {
+          Fluttertoast.showToast(msg: 'Order not found');
+        } else {
+          Fluttertoast.showToast(msg: e);
+        }
+      });
+    } catch (e) {
+      isSwapProcessing(false);
+
+      print(e);
+    }
+  }
+
+  void cancelOrder(var arguments) async {
+    getOrderDetail(arguments['id'].toString());
+    dynamic body = {"table": arguments['id'], "status": "cancelled"};
+    try {
+      TableProvider().cancelOrder(order.value.id.toString(), body).then(
+          (response) {
+        if (response['status'] == 'cancelled') {
+          Fluttertoast.showToast(msg: 'Cancel successfully.');
+          getTabless();
+        }
+      }, onError: (e) {
+        if (e == 'Not Found') {
+          Fluttertoast.showToast(msg: 'Table not found.');
+        } else {
+          Fluttertoast.showToast(msg: e);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void openTable(var arguments) {
@@ -119,6 +175,29 @@ class TableController extends GetxController {
         lstTable.clear();
         isDataProcessing(false);
         lstTable.addAll(response);
+        isDataError(false);
+      }, onError: (error) {
+        isDataProcessing(false);
+        isDataError(true);
+        dataError(error);
+      });
+    } catch (e) {
+      isDataProcessing(false);
+      isDataError(true);
+      dataError(e);
+    }
+  }
+
+  void getOrderDetail(String id) {
+    try {
+      isDataProcessing(true);
+      OrderProvider().getOrderDetail(id).then((response) {
+        isDataProcessing(false);
+        if (response.length != 0) {
+          order.value = OrderModel.fromJson(response[0]);
+        } else {
+          order.value = null;
+        }
         isDataError(false);
       }, onError: (error) {
         isDataProcessing(false);

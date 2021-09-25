@@ -33,9 +33,9 @@ class UserRepository {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String userString = pref.getString('user');
     if (userString == null) {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   }
 

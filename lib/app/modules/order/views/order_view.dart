@@ -83,7 +83,9 @@ class OrderView extends GetView<OrderController> {
                       child: BtnTextWhiteWidget(
                         text: 'Checkout',
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(AppRoutes.CHECKOUT);
+                      },
                     ),
                   ),
                   BouncingWidget(

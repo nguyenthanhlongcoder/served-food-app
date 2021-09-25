@@ -8,4 +8,6 @@ class AppRoutes {
   static const BROWSE = '/BROWSE';
   static const BROWSE_FILTER = '/BROWSE_FILTER';
   static const PRODUCT_DETAIL = '/PRODUCT_DETAIL';
+  static const CHECKOUT = '/CHECKOUT';
+  static const CREDIT_CARD = '/CREDIT_CARD';
 }

@@ -24,6 +24,7 @@ class OrderItem extends StatelessWidget {
     this.productVariationOptionID,
     this.userID,
     this.orderItemVariationOptionsID,
+    this.isActive,
   }) : super(key: key);
   final String image;
   final String title;
@@ -38,6 +39,7 @@ class OrderItem extends StatelessWidget {
   final int productVariationOptionID;
   final int userID;
   final List<int> orderItemVariationOptionsID;
+  final bool isActive;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -56,61 +58,69 @@ class OrderItem extends StatelessWidget {
             extras: extras,
             id: id));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          OrderItemImage(
-            image: image,
-          ),
-          Container(
-            height: 80,
-            width: Get.width - kPadding * 5 - 80,
-            padding: const EdgeInsets.only(left: kPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                OrderItemHeader(
-                  title: title,
-                  quantity: quantity,
-                ),
-                Flexible(
-                  child: Text(
-                    note,
-                    overflow: TextOverflow.ellipsis,
-                    style: kBodyTextStyle.copyWith(
-                        color: kHintColor,
-                        fontSize: kBodyTextSize,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-                RichText(
-                    text: TextSpan(
-                        text: 'Extras: ',
-                        style: kBodyTextStyle.copyWith(
-                            color: Colors.black,
-                            fontSize: kBodyTextSize,
-                            fontWeight: FontWeight.bold),
-                        children: [
-                      TextSpan(
-                        text: extras,
-                        style: kBodyTextStyle.copyWith(
-                            color: kBtnColorStart,
-                            fontSize: kBodyTextSize,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ])),
-                Text(
-                  price + ' VNĐ',
-                  style: kBodyTextStyle.copyWith(
-                      color: kBtnColorStart,
-                      fontSize: kBodyTextSize,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+              width: 2,
+              color: isActive ? Colors.white : Colors.red,
             ),
-          ),
-        ],
+            borderRadius: BorderRadius.all(Radius.circular(kBorderRadius))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            OrderItemImage(
+              image: image,
+            ),
+            Container(
+              height: 80,
+              width: Get.width - kPadding * 5 - 80,
+              padding: const EdgeInsets.only(left: kPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OrderItemHeader(
+                    title: title,
+                    quantity: quantity,
+                  ),
+                  Flexible(
+                    child: Text(
+                      note,
+                      overflow: TextOverflow.ellipsis,
+                      style: kBodyTextStyle.copyWith(
+                          color: kHintColor,
+                          fontSize: kBodyTextSize,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  RichText(
+                      text: TextSpan(
+                          text: 'Extras: ',
+                          style: kBodyTextStyle.copyWith(
+                              color: Colors.black,
+                              fontSize: kBodyTextSize,
+                              fontWeight: FontWeight.bold),
+                          children: [
+                        TextSpan(
+                          text: extras,
+                          style: kBodyTextStyle.copyWith(
+                              color: kBtnColorStart,
+                              fontSize: kBodyTextSize,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ])),
+                  Text(
+                    price + ' VNĐ',
+                    style: kBodyTextStyle.copyWith(
+                        color: kBtnColorStart,
+                        fontSize: kBodyTextSize,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -170,21 +180,19 @@ class BottomSheet extends StatelessWidget {
                     Container(
                       height: 40,
                       width: Get.width - 80 - kPadding * 3,
-                      child: Flexible(
-                        child: RichText(
-                          text: TextSpan(
-                              text: title + ' - SL: ',
-                              style: kBodyTextStyle.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                              children: [
-                                TextSpan(
-                                    text: quantity,
-                                    style: kBodyTextStyle.copyWith(
-                                        color: kBtnColorStart,
-                                        fontWeight: FontWeight.bold))
-                              ]),
-                        ),
+                      child: RichText(
+                        text: TextSpan(
+                            text: title + ' - SL: ',
+                            style: kBodyTextStyle.copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                  text: quantity,
+                                  style: kBodyTextStyle.copyWith(
+                                      color: kBtnColorStart,
+                                      fontWeight: FontWeight.bold))
+                            ]),
                       ),
                     ),
                     SizedBox(
