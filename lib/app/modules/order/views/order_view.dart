@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'package:served_food/app/common/app_styles/index.dart';
@@ -84,7 +85,14 @@ class OrderView extends GetView<OrderController> {
                         text: 'Checkout',
                       ),
                       onTap: () {
-                        Get.toNamed(AppRoutes.CHECKOUT);
+                        if (controller.order.value != null) {
+                          Get.toNamed(AppRoutes.CHECKOUT, arguments: [
+                            Get.arguments['name'],
+                            controller.order.value
+                          ]);
+                        } else {
+                          Fluttertoast.showToast(msg: 'No item to check out');
+                        }
                       },
                     ),
                   ),
@@ -179,7 +187,7 @@ class ShoppingCartView extends StatelessWidget {
                         child: GradientBtnWidget(onTap: () {
                           controller.addOrder(arguments);
                         }, child: Obx(() {
-                          if (controller.isDataProcessing.value) {
+                          if (controller.isAddOrderProcessing.value) {
                             return Container(
                               height: kIconSize,
                               width: kIconSize,

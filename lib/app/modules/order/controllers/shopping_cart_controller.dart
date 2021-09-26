@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_datas/product_model.dart';
 import 'package:served_food/app/modules/order/controllers/order_controller.dart';
@@ -11,6 +12,7 @@ class ShoppingCartController extends GetxController {
   var isDataProcessing = false.obs;
   var isDataError = false.obs;
   var dataError = ''.obs;
+  var isAddOrderProcessing = false.obs;
   List<OrderItemModel> orderItems = [];
   var productItem = new ProductModel().obs;
   var cartItems = List<CartModel>.empty(growable: true).obs;
@@ -33,34 +35,26 @@ class ShoppingCartController extends GetxController {
 
   void addOrder(var arguments) async {
     OrderController controller = Get.put(OrderController());
-    isDataProcessing(true);
+
+    isAddOrderProcessing(true);
     if (controller.order.value == null) {
       dynamic body = {
         "table": int.parse(controller.tableID.value),
         "status": "serving",
-        "order_item": [],
       };
       try {
-        OrderProvider().createOrder(body).then((response) {
+        OrderProvider().createOrder(body).then((response) async {
           if (response != null) {
-            addOrderItems(response["id"]);
+            await addOrderItems(response["id"]);
           }
         });
       } catch (e) {
-        print(e);
+        Fluttertoast.showToast(msg: e);
+        isAddOrderProcessing(false);
       }
     } else {
-      addOrderItems(controller.order.value.id);
+      await addOrderItems(controller.order.value.id);
     }
-
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.remove('order_items');
-    pref.remove('carts');
-    OrderController orderController = Get.put(OrderController());
-    orderController.getOrderDetail();
-    isDataProcessing(false);
-
-    Get.back();
   }
 
   void removeCartItem(var index) async {
@@ -74,7 +68,7 @@ class ShoppingCartController extends GetxController {
     pref.setString('carts', encodedCartItem);
   }
 
-  void addOrderItems(int orderID) {
+  Future<void> addOrderItems(int orderID) async {
     int order = orderID;
     for (var orderItem in orderItems) {
       if (orderItem.order != 0) {
@@ -91,14 +85,25 @@ class ShoppingCartController extends GetxController {
         "user": orderItem.user
       };
       try {
-        ShoppingCartProvider().addOrderItem(body).then((response) {
-          print(response);
+        ShoppingCartProvider().addOrderItem(body).then((response) async {
+          if (response != null) {
+            isAddOrderProcessing(false);
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            pref.remove('order_items');
+            pref.remove('carts');
+
+            OrderController controller = Get.put(OrderController());
+            controller.getOrderDetail();
+          }
         });
       } catch (e) {
         isDataProcessing(false);
         isDataError(false);
         dataError(e);
       }
+    }
+    if (!isDataError.value) {
+      Get.back();
     }
   }
 }

@@ -6,9 +6,11 @@ class OrderItemHeader extends StatelessWidget {
     Key key,
     this.title,
     this.quantity,
+    this.isActive,
   }) : super(key: key);
   final String title;
   final String quantity;
+  final bool isActive;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,25 +21,39 @@ class OrderItemHeader extends StatelessWidget {
             title,
             overflow: TextOverflow.ellipsis,
             style: kBodyTextStyle.copyWith(
-                color: Colors.black,
+                color: isActive ? Colors.black : Colors.grey,
                 fontSize: kSubtitleTextSize,
-                fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.bold,
+                decoration:
+                    isActive ? TextDecoration.none : TextDecoration.lineThrough,
+                decorationColor: Colors.red,
+                decorationThickness: 2),
           ),
         ),
         RichText(
           text: TextSpan(
               text: 'SL: ',
               style: kBodyTextStyle.copyWith(
-                  color: Colors.black,
+                  color: isActive ? Colors.black : Colors.grey,
                   fontSize: kSubtitleTextSize,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold,
+                  decoration: isActive
+                      ? TextDecoration.none
+                      : TextDecoration.lineThrough,
+                  decorationColor: Colors.red,
+                  decorationThickness: 2),
               children: [
                 TextSpan(
                     text: quantity,
                     style: kBodyTextStyle.copyWith(
                         color: kBtnColorStart,
                         fontSize: kSubtitleTextSize,
-                        fontWeight: FontWeight.bold))
+                        fontWeight: FontWeight.bold,
+                        decoration: isActive
+                            ? TextDecoration.none
+                            : TextDecoration.lineThrough,
+                        decorationColor: Colors.red,
+                        decorationThickness: 2))
               ]),
         ),
       ],

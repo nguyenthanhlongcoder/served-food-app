@@ -60,16 +60,13 @@ class OrderItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(
-              width: 2,
-              color: isActive ? Colors.white : Colors.red,
-            ),
             borderRadius: BorderRadius.all(Radius.circular(kBorderRadius))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             OrderItemImage(
               image: image,
+              isActive: isActive,
             ),
             Container(
               height: 80,
@@ -82,6 +79,7 @@ class OrderItem extends StatelessWidget {
                   OrderItemHeader(
                     title: title,
                     quantity: quantity,
+                    isActive: isActive,
                   ),
                   Flexible(
                     child: Text(
@@ -97,8 +95,13 @@ class OrderItem extends StatelessWidget {
                       text: TextSpan(
                           text: 'Extras: ',
                           style: kBodyTextStyle.copyWith(
-                              color: Colors.black,
+                              color: isActive ? Colors.black : Colors.grey,
                               fontSize: kBodyTextSize,
+                              decoration: isActive
+                                  ? TextDecoration.none
+                                  : TextDecoration.lineThrough,
+                              decorationColor: Colors.red,
+                              decorationThickness: 2,
                               fontWeight: FontWeight.bold),
                           children: [
                         TextSpan(
@@ -106,6 +109,11 @@ class OrderItem extends StatelessWidget {
                           style: kBodyTextStyle.copyWith(
                               color: kBtnColorStart,
                               fontSize: kBodyTextSize,
+                              decoration: isActive
+                                  ? TextDecoration.none
+                                  : TextDecoration.lineThrough,
+                              decorationColor: Colors.red,
+                              decorationThickness: 2,
                               fontWeight: FontWeight.bold),
                         )
                       ])),
@@ -114,6 +122,11 @@ class OrderItem extends StatelessWidget {
                     style: kBodyTextStyle.copyWith(
                         color: kBtnColorStart,
                         fontSize: kBodyTextSize,
+                        decoration: isActive
+                            ? TextDecoration.none
+                            : TextDecoration.lineThrough,
+                        decorationColor: Colors.red,
+                        decorationThickness: 2,
                         fontWeight: FontWeight.bold),
                   ),
                 ],

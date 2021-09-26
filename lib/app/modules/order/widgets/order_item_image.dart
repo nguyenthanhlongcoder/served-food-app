@@ -7,8 +7,10 @@ class OrderItemImage extends StatelessWidget {
   const OrderItemImage({
     Key key,
     this.image,
+    this.isActive,
   }) : super(key: key);
   final String image;
+  final bool isActive;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

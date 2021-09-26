@@ -10,4 +10,6 @@ class AppRoutes {
   static const PRODUCT_DETAIL = '/PRODUCT_DETAIL';
   static const CHECKOUT = '/CHECKOUT';
   static const CREDIT_CARD = '/CREDIT_CARD';
+  static const CASH = '/CASH';
+  static const CHECKOUT_RESULT = '/CHECKOUT_RESULT';
 }

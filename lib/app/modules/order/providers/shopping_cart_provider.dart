@@ -6,10 +6,8 @@ class ShoppingCartProvider extends GetConnect {
     try {
       final response = await post(GetRequestUrl.CREATE_ORDER_ITEM, body);
       if (response.status.hasError) {
-        print(body);
         return Future.error(response.statusText);
       } else {
-        print(response.body);
         return response.body;
       }
     } catch (e) {

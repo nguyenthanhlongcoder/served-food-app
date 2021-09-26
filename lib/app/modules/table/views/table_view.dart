@@ -233,6 +233,7 @@ class TableView extends StatelessWidget {
                               title: Text('Đặt Lại'),
                               onPressed: () {
                                 controller.resetTable(data[index]);
+                                controller.getTabless();
                               },
                               trailingIcon: Icon(
                                 Icons.restart_alt,

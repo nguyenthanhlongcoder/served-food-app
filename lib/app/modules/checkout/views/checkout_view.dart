@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
 import 'package:served_food/app/common/app_widgets/gradient_btn_widget.dart';
+import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/checkout/components/checkout_header.dart';
+import 'package:served_food/app/modules/checkout/controllers/cash_payment_controller.dart';
 import 'package:served_food/app/modules/checkout/widgets/payment_method_item.dart';
+import 'package:served_food/app/modules/order/models/order_model.dart';
 import 'package:served_food/app/modules/order/widgets/order_clipper.dart';
 import 'package:served_food/app/routes/app_routes.dart';
 
@@ -71,7 +75,10 @@ class CheckoutViewState extends State<CheckoutView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CheckoutHeader(),
+                          CheckoutHeader(
+                            tableName: Get.arguments[0],
+                            order: Get.arguments[1],
+                          ),
                           SizedBox(
                             height: kPadding * 2,
                           ),
@@ -90,8 +97,8 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/visa.svg',
-                                content: '*** *** *** 5967',
+                                icon: 'assets/svg_pictures/cash-payment.svg',
+                                content: 'Cash Payment',
                                 isActive: isActives[0],
                                 onTap: () {
                                   setState(() {
@@ -106,7 +113,7 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/mastercard.svg',
+                                icon: 'assets/svg_pictures/visa.svg',
                                 content: '*** *** *** 5967',
                                 isActive: isActives[1],
                                 onTap: () {
@@ -122,8 +129,8 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/paypal.svg',
-                                content: 'anhlang@w360s.com',
+                                icon: 'assets/svg_pictures/mastercard.svg',
+                                content: '*** *** *** 5967',
                                 isActive: isActives[2],
                                 onTap: () {
                                   setState(() {
@@ -138,15 +145,15 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/momo.svg',
-                                content: '0908652940',
+                                icon: 'assets/svg_pictures/paypal.svg',
+                                content: 'anhlang@w360s.com',
                                 isActive: isActives[3],
                                 onTap: () {
                                   setState(() {
                                     for (int i = 0; i <= 4; i++) {
                                       isActives[i] = false;
                                     }
-                                    isActives[3] = !isActives[2];
+                                    isActives[3] = !isActives[3];
                                   });
                                 },
                               ),
@@ -154,8 +161,8 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/cash-payment.svg',
-                                content: 'Cash Payment',
+                                icon: 'assets/svg_pictures/momo.svg',
+                                content: '0908652940',
                                 isActive: isActives[4],
                                 onTap: () {
                                   setState(() {
@@ -165,7 +172,7 @@ class CheckoutViewState extends State<CheckoutView> {
                                     isActives[4] = !isActives[4];
                                   });
                                 },
-                              )
+                              ),
                             ],
                           )
                         ],
@@ -186,10 +193,128 @@ class CheckoutViewState extends State<CheckoutView> {
                     text: 'Payment',
                   ),
                   onTap: () {
-                    Get.toNamed(AppRoutes.CREDIT_CARD);
+                    Get.bottomSheet(CashPayment(
+                      tableName: Get.arguments[0],
+                      order: Get.arguments[1],
+                    ));
                   },
                 ),
               )),
+        ],
+      ),
+    );
+  }
+}
+
+class CashPayment extends StatefulWidget {
+  final String tableName;
+  final OrderModel order;
+  const CashPayment({Key key, this.tableName, this.order}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() {
+    return CashPaymentState();
+  }
+}
+
+class CashPaymentState extends State<CashPayment> {
+  int change = 0;
+  bool validate = false;
+  @override
+  Widget build(BuildContext context) {
+    CashPaymentController controller = Get.put(CashPaymentController());
+    return Container(
+      height: Get.height / 3,
+      padding: EdgeInsets.all(kPadding),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(kBorderRadius * 2),
+              topRight: Radius.circular(kBorderRadius * 2)),
+          color: Colors.white),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+                text: 'total price: '.toUpperCase(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: kSubtitleTextSize,
+                    fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(
+                    text: formatNumber(widget.order.orderTotalPrice) + ' VNĐ',
+                    style: TextStyle(
+                        color: kBtnColorStart,
+                        fontSize: kSubtitleTextSize,
+                        fontWeight: FontWeight.bold),
+                  )
+                ]),
+          ),
+          SizedBox(
+            height: kPadding,
+          ),
+          TextFormField(
+            onChanged: (value) {
+              setState(() {
+                if (widget.order.orderTotalPrice > int.parse(value)) {
+                  validate = false;
+                  change = 0;
+                } else {
+                  validate = true;
+                  change = int.parse(value) - widget.order.orderTotalPrice;
+                }
+              });
+            },
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+                errorText:
+                    !validate ? 'Value Must Be More Than Total Price' : null,
+                border: OutlineInputBorder(),
+                hintText: 'Enter Cash...'),
+          ),
+          SizedBox(
+            height: kPadding,
+          ),
+          RichText(
+            text: TextSpan(
+                text: 'change: '.toUpperCase(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: kSubtitleTextSize,
+                    fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(
+                    text: formatNumber(change) + ' VNĐ',
+                    style: TextStyle(
+                        color: kBtnColorStart,
+                        fontSize: kSubtitleTextSize,
+                        fontWeight: FontWeight.bold),
+                  )
+                ]),
+          ),
+          SizedBox(
+            height: kPadding,
+          ),
+          GradientBtnWidget(onTap: () {
+            if (validate) {
+              controller.cashOrder(widget.order);
+            }
+          }, child: Obx(() {
+            if (controller.isDataProcessing.value) {
+              return Container(
+                width: kIconSize,
+                height: kIconSize,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              );
+            } else {
+              return BtnTextWhiteWidget(
+                text: 'Confirm',
+              );
+            }
+          }))
         ],
       ),
     );

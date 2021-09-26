@@ -20,7 +20,7 @@ class TableController extends GetxController {
   var dataError = ''.obs;
   var lstTable = List<dynamic>.empty(growable: true).obs;
   var user = new UserModel().obs;
-  var order = new OrderModel().obs;
+  OrderModel order = new OrderModel();
   var tableID = 0.obs;
   var isSwapProcessing = false.obs;
   @override
@@ -75,11 +75,12 @@ class TableController extends GetxController {
     await getOrderDetail(id.toString());
     dynamic body = jsonEncode({'table': tableID.value});
     try {
-      OrderProvider().updateOrder(order.value.id.toString(), body).then(
-          (response) {
+      OrderProvider().updateOrder(order.id.toString(), body).then((response) {
         if (response != null) {
-          getTabless();
+          Fluttertoast.showToast(msg: 'Swap table successfully.');
           Get.back();
+          isSwapProcessing(false);
+          getTabless();
         } else {
           Fluttertoast.showToast(msg: response.printError());
         }
@@ -103,8 +104,7 @@ class TableController extends GetxController {
     getOrderDetail(arguments['id'].toString());
     dynamic body = {"table": arguments['id'], "status": "cancelled"};
     try {
-      TableProvider().cancelOrder(order.value.id.toString(), body).then(
-          (response) {
+      TableProvider().cancelOrder(order.id.toString(), body).then((response) {
         if (response['status'] == 'cancelled') {
           Fluttertoast.showToast(msg: 'Cancel successfully.');
           getTabless();
@@ -170,19 +170,15 @@ class TableController extends GetxController {
 
   void getTabless() {
     try {
-      isDataProcessing(true);
       TableProvider().getTabless().then((response) {
         lstTable.clear();
-        isDataProcessing(false);
         lstTable.addAll(response);
         isDataError(false);
       }, onError: (error) {
-        isDataProcessing(false);
         isDataError(true);
         dataError(error);
       });
     } catch (e) {
-      isDataProcessing(false);
       isDataError(true);
       dataError(e);
     }
@@ -190,13 +186,12 @@ class TableController extends GetxController {
 
   void getOrderDetail(String id) {
     try {
-      isDataProcessing(true);
       OrderProvider().getOrderDetail(id).then((response) {
         isDataProcessing(false);
         if (response.length != 0) {
-          order.value = OrderModel.fromJson(response[0]);
+          order = OrderModel.fromJson(response[0]);
         } else {
-          order.value = null;
+          order = null;
         }
         isDataError(false);
       }, onError: (error) {
