@@ -7,6 +7,7 @@ import 'package:served_food/app/common/app_styles/app_themes.dart';
 import 'app/common/push_notification/push_notification.dart';
 import 'app/routes/app_pages.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -38,6 +39,8 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   var a = new PushNotificationsManager();
   a.init();
   runApp(ThemeProvider(

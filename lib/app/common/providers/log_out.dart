@@ -38,8 +38,8 @@ class LogOut {
         }
       }
     });
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.clear();
-    Get.offAllNamed(AppPages.LOGIN);
+
+    userRepository.deleteAll();
+    Get.offAllNamed(AppRoutes.WELCOME);
   }
 }

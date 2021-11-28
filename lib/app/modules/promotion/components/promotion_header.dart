@@ -21,7 +21,7 @@ class PromotionHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           PromotionName(
-            title: promotion.name,
+            title: promotion.name ?? '',
           ),
           SizedBox(height: kPadding * 2),
           Row(
@@ -29,11 +29,11 @@ class PromotionHeader extends StatelessWidget {
             children: [
               Time(
                 title: 'Start at',
-                time: promotion.startAt,
+                time: promotion.startAt ?? DateTime.now(),
               ),
               Time(
                 title: 'End at',
-                time: promotion.endAt,
+                time: promotion.endAt ?? DateTime.now(),
               ),
               SizedBox()
             ],

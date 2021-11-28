@@ -41,7 +41,7 @@ class HomeView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Thông báo',
+                    'Notifications',
                     style: kBodyTextStyle.copyWith(
                         fontSize: kSubtitleTextSize,
                         color: kTextBlackColor,
@@ -50,7 +50,7 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: kPadding * 1.5,
                   ),
-                  // HomeMessageList(),
+                  HomeMessageList(),
                 ],
               ),
             ),
@@ -73,16 +73,10 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: kPadding * 1.5,
                   ),
-                  // PromotionSlider(),
+                  PromotionSlider(),
                 ],
               ),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  LogOut().logOut();
-                  UserRepository().deleteAll();
-                },
-                child: Text('Log Out'))
           ],
         ),
       ),

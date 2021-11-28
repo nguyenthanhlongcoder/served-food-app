@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   static const EXPIRY_KEY = 'expiry';
+  static const TOKEN_KEY = 'token';
   Future<void> persistExpiry(String expiry) async {
     const FlutterSecureStorage storage = FlutterSecureStorage();
     try {
@@ -13,6 +14,29 @@ class UserRepository {
       print('Something went wrong when store user infomation: ' + e.toString());
     }
     return false;
+  }
+
+  Future<void> persistToken(String token) async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    try {
+      await storage.write(key: TOKEN_KEY, value: token);
+      return true;
+    } on Exception catch (e) {
+      print('Something went wrong when store user infomation: ' + e.toString());
+    }
+    return false;
+  }
+
+  Future<String> fetchToken() async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    Map<String, String> all = await storage.readAll();
+    String token = '';
+    for (var item in all.entries) {
+      if (item.key == TOKEN_KEY) {
+        token = item.value;
+      }
+    }
+    return token;
   }
 
   Future<void> deleteAll() async {

@@ -12,7 +12,6 @@ class UserModel {
   UserModel({
     this.id,
     this.password,
-    this.lastLogin,
     this.email,
     this.firstName,
     this.lastName,
@@ -29,7 +28,6 @@ class UserModel {
 
   int id;
   String password;
-  DateTime lastLogin;
   String email;
   String firstName;
   String lastName;
@@ -46,7 +44,6 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         password: json["password"],
-        lastLogin: DateTime.parse(json["last_login"]),
         email: json["email"],
         firstName: json["first_name"],
         lastName: json["last_name"],
@@ -65,7 +62,6 @@ class UserModel {
   Map<String, dynamic> toJson() => {
         "id": id,
         "password": password,
-        "last_login": lastLogin.toIso8601String(),
         "email": email,
         "first_name": firstName,
         "last_name": lastName,
@@ -83,7 +79,6 @@ class UserModel {
   static Map<String, dynamic> toMap(UserModel user) => {
         "id": user.id,
         "password": user.password,
-        "last_login": user.lastLogin,
         "email": user.email,
         "first_name": user.firstName,
         "last_name": user.lastName,

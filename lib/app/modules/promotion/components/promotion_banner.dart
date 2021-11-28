@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
+import 'package:skeletons/skeletons.dart';
 
 class PromotionBanner extends StatelessWidget {
   const PromotionBanner({
@@ -30,12 +32,13 @@ class PromotionBanner extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(10)),
             child: image != null
-                ? Image.network(
-                    image,
-                    fit: BoxFit.cover,
-                    width: Get.width,
+                ? CachedNetworkImage(
+                    imageUrl: image,
+                    placeholder: (context, url) {
+                      return SkeletonAvatar();
+                    },
                   )
-                : Placeholder(),
+                : Container(),
           ),
         ],
       ),

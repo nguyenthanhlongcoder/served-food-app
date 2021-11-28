@@ -7,7 +7,6 @@ import 'package:served_food/app/common/app_styles/app_size.dart';
 import 'package:served_food/app/common/app_styles/app_text_styles.dart';
 import 'package:served_food/app/modules/home/controllers/message_controller.dart';
 import 'package:served_food/app/modules/home/widgets/home_message_item.dart';
-import 'package:skeletons/skeletons.dart';
 
 class HomeMessageList extends StatelessWidget {
   final MessageController controller = Get.put(MessageController());

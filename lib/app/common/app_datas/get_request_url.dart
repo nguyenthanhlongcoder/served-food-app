@@ -15,6 +15,7 @@ class GetRequestUrl {
     return requestUrl;
   }
 
+  static const USERS = '$DOMAIN/users/';
   static const CANCEL_ORDER = '$DOMAIN/orders/create_order/';
   static const CREATE_ORDER_ITEM = '$DOMAIN/orders/create_order_item';
   static const ORDER_ITEMS = '$DOMAIN/orders/order_items?order=';
@@ -29,4 +30,17 @@ class GetRequestUrl {
   static const ORDER_ITEM_DETAIL = '$DOMAIN/orders/create_order_item/';
   static const EXTRAS = '$DOMAIN/products/extras';
   static const CREATE_ORDER_DETAIL = '$DOMAIN/orders/create_order/';
+
+  String getTotalSale(String startAt, String endAt) {
+    return '$DOMAIN/orders/order_records?updated_at__gte=$startAt&updated_at__lte=$endAt&status=paid';
+  }
+
+  String getCancelSale(String startAt, String endAt) {
+    return '$DOMAIN/orders/order_records?updated_at__gte=$startAt&updated_at__lte=$endAt&status=cancelled';
+  }
+
+  String getItemSale(
+      String startAt, String endAt, String user, String product) {
+    return '$DOMAIN/orders/order_item_records?updated_at__gte=$startAt&updated_at__lte=$endAt&is_active=true&user=$user&product=$product';
+  }
 }

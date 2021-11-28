@@ -39,9 +39,9 @@ class MainController extends GetxController {
           userRepository.getUser().then((value) async {
             var response = await new ApiProvider().get(
                 getRequestUrl.getFCMDeviceUrl(value.id.toString(), deviceID));
-            if (response.length == 0) {
+            if (response['count'] == 0) {
               new ApiProvider().post(
-                  GetRequestUrl.FCM_DEVICES,
+                  GetRequestUrl.GET_FCM_DEVICE,
                   json.encode({
                     "name": deviceName,
                     "is_active": true,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_components/description.dart';
 import 'package:served_food/app/common/app_components/failure_load.dart';
@@ -32,11 +33,10 @@ class PromotionView extends GetView<PromotionController> {
         body: Obx(() {
           if (controller.isDataProcessing.value) {
             return Center(
-              child: Container(
-                margin: EdgeInsets.all(8),
-                child: CircularProgressIndicator(),
-              ),
-            );
+                child: SpinKitFadingFour(
+              size: kIconSize * 2,
+              color: kBtnColorStart,
+            ));
           } else {
             if (controller.isDataError.value) {
               return FailureLoad(
@@ -46,23 +46,25 @@ class PromotionView extends GetView<PromotionController> {
             } else {
               PromotionModel promotion = controller.promotion.value;
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  PromotionHeader(promotion: promotion),
-                  SizedBox(
-                    height: kPadding / 2,
-                  ),
-                  Description(
-                    description: promotion.description,
-                  ),
-                  SizedBox(
-                    height: kPadding / 2,
-                  ),
-                  PromotionBanner(
-                    image: promotion.image,
-                  )
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PromotionHeader(promotion: promotion),
+                    SizedBox(
+                      height: kPadding / 2,
+                    ),
+                    Description(
+                      description: promotion.description,
+                    ),
+                    SizedBox(
+                      height: kPadding / 2,
+                    ),
+                    PromotionBanner(
+                      image: promotion.image,
+                    )
+                  ],
+                ),
               );
             }
           }

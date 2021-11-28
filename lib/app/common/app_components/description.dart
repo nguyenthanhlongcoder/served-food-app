@@ -27,7 +27,7 @@ class Description extends StatelessWidget {
             height: kPadding,
           ),
           Text(
-            description,
+            description ?? '',
             style: kBodyTextStyle.copyWith(
                 fontSize: kBodyTextSize,
                 color: kHintColor,

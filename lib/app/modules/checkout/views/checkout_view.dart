@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
 import 'package:served_food/app/common/app_widgets/gradient_btn_widget.dart';
 import 'package:served_food/app/common/providers/format_number.dart';
 import 'package:served_food/app/modules/checkout/components/checkout_header.dart';
 import 'package:served_food/app/modules/checkout/controllers/cash_payment_controller.dart';
+import 'package:served_food/app/modules/checkout/providers/payment_service.dart';
 import 'package:served_food/app/modules/checkout/widgets/payment_method_item.dart';
 import 'package:served_food/app/modules/order/models/order_model.dart';
 import 'package:served_food/app/modules/order/widgets/order_clipper.dart';
@@ -113,8 +116,8 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/visa.svg',
-                                content: '*** *** *** 5967',
+                                icon: 'assets/svg_pictures/momo.svg',
+                                content: '0908652940',
                                 isActive: isActives[1],
                                 onTap: () {
                                   setState(() {
@@ -129,7 +132,7 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/mastercard.svg',
+                                icon: 'assets/svg_pictures/visa.svg',
                                 content: '*** *** *** 5967',
                                 isActive: isActives[2],
                                 onTap: () {
@@ -145,8 +148,8 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/paypal.svg',
-                                content: 'anhlang@w360s.com',
+                                icon: 'assets/svg_pictures/mastercard.svg',
+                                content: '*** *** *** 5967',
                                 isActive: isActives[3],
                                 onTap: () {
                                   setState(() {
@@ -161,8 +164,8 @@ class CheckoutViewState extends State<CheckoutView> {
                                 height: kPadding,
                               ),
                               PaymentMethodItem(
-                                icon: 'assets/svg_pictures/momo.svg',
-                                content: '0908652940',
+                                icon: 'assets/svg_pictures/paypal.svg',
+                                content: 'anhlang@w360s.com',
                                 isActive: isActives[4],
                                 onTap: () {
                                   setState(() {
@@ -193,10 +196,22 @@ class CheckoutViewState extends State<CheckoutView> {
                     text: 'Payment',
                   ),
                   onTap: () {
-                    Get.bottomSheet(CashPayment(
-                      tableName: Get.arguments[0],
-                      order: Get.arguments[1],
-                    ));
+                    if (isActives[0]) {
+                      Get.bottomSheet(CashPayment(
+                        tableName: Get.arguments[0],
+                        order: Get.arguments[1],
+                      ));
+                    }
+                    if (isActives[2]) {
+                      OrderModel order = Get.arguments[1];
+                      // Get.toNamed(AppRoutes.CREDIT_CARD,
+                      //     arguments: [CardType.visa, Get.arguments[1]]);
+                      // payViaNewCard(context, order.orderTotalPrice);
+                    }
+                    if (isActives[3]) {
+                      Get.toNamed(AppRoutes.CREDIT_CARD,
+                          arguments: [CardType.mastercard, Get.arguments[1]]);
+                    }
                   },
                 ),
               )),
@@ -205,6 +220,21 @@ class CheckoutViewState extends State<CheckoutView> {
     );
   }
 }
+
+// payViaNewCard(BuildContext context, int amount) async {
+//   ProgressDialog dialog = new ProgressDialog(context);
+//   dialog.style(message: 'Please wait...');
+//   await dialog.show();
+//   var response = await StripeService.payWithNewCard(
+//       amount: amount.toString(), currency: 'VND');
+//   await dialog.hide();
+//   Get.snackbar(
+//     'Thông báo',
+//     response.message,
+//     duration:
+//         new Duration(milliseconds: response.success == true ? 1200 : 3000),
+//   );
+// }
 
 class CashPayment extends StatefulWidget {
   final String tableName;

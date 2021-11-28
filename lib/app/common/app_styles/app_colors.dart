@@ -22,7 +22,36 @@ const LinearGradient kBtnLinearGradient = LinearGradient(
     kBtnColorEnd,
   ],
 );
-
+const LinearGradient kTotalSaleLinearGradient = LinearGradient(
+  colors: [
+    Color(0xff8AFFB5),
+    Color(0xff00CC88),
+  ],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+);
+const LinearGradient kProductSaleLinearGradient = LinearGradient(
+  colors: [
+    Color(0xff35EEE1),
+    Color(0xff479DFF),
+  ],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+);
+const LinearGradient kExtraSaleLinearGradient = LinearGradient(
+  colors: [
+    Color(0xffFF85F3),
+    Color(0xff887BFF),
+  ],
+);
+const LinearGradient kCancelSaleLinearGradient = LinearGradient(
+  colors: [
+    Color(0xffFEC180),
+    Color(0xFFCF3542),
+  ],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+);
 Color getColorFromHex(String hexColor) {
   hexColor = hexColor.replaceFirst("#", "");
   if (hexColor.length == 6) {

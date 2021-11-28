@@ -13,7 +13,7 @@ class SliderController extends GetxController {
     getPromotion();
   }
 
-  Stream<http.Response> getPromotion() async* {
+  Stream getPromotion() async* {
     try {
       isDataProcessing(true);
       PromotionProvider().getPromotion().then((response) {

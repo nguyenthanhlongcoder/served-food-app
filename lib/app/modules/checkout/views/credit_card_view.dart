@@ -3,6 +3,10 @@ import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:get/get.dart';
+import 'package:served_food/app/common/app_styles/app_size.dart';
+import 'package:served_food/app/modules/checkout/controllers/credit_card_payment_controller.dart';
+import 'package:served_food/app/modules/order/models/order_model.dart';
 
 class CreditCardView extends StatefulWidget {
   @override
@@ -35,6 +39,8 @@ class CreditCardViewState extends State<CreditCardView> {
 
   @override
   Widget build(BuildContext context) {
+    // CreditCardPaymentController controller =
+    //     Get.put(CreditCardPaymentController());
     return MaterialApp(
       title: 'Flutter Credit Card View Demo',
       debugShowCheckedModeBanner: false,
@@ -55,12 +61,20 @@ class CreditCardViewState extends State<CreditCardView> {
           ),
           child: SafeArea(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                IconButton(
+                    onPressed: () => Get.back(),
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    )),
                 const SizedBox(
-                  height: 30,
+                  height: kPadding,
                 ),
                 CreditCardWidget(
-                  cardType: CardType.mastercard,
+                  cardType: Get.arguments[0],
                   glassmorphismConfig:
                       useGlassMorphism ? Glassmorphism.defaultConfig() : null,
                   cardNumber: cardNumber,
@@ -131,51 +145,6 @@ class CreditCardViewState extends State<CreditCardView> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Text(
-                              'Glassmorphism',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Switch(
-                              value: useGlassMorphism,
-                              inactiveTrackColor: Colors.grey,
-                              activeColor: Colors.white,
-                              activeTrackColor: Colors.green,
-                              onChanged: (bool value) => setState(() {
-                                useGlassMorphism = value;
-                              }),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Text(
-                              'Card Image',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Switch(
-                              value: useBackgroundImage,
-                              inactiveTrackColor: Colors.grey,
-                              activeColor: Colors.white,
-                              activeTrackColor: Colors.green,
-                              onChanged: (bool value) => setState(() {
-                                useBackgroundImage = value;
-                              }),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -184,9 +153,9 @@ class CreditCardViewState extends State<CreditCardView> {
                             primary: const Color(0xff1b447b),
                           ),
                           child: Container(
-                            margin: const EdgeInsets.all(12),
+                            margin: const EdgeInsets.all(kPadding),
                             child: const Text(
-                              'Validate',
+                              'Confirm',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'halter',
@@ -196,11 +165,21 @@ class CreditCardViewState extends State<CreditCardView> {
                             ),
                           ),
                           onPressed: () {
-                            if (formKey.currentState.validate()) {
-                              print('valid!');
-                            } else {
-                              print('invalid!');
-                            }
+                            // if (formKey.currentState.validate()) {
+                            //   CreditCard creditCard = new CreditCard(
+                            //     number: cardNumber,
+                            //     expMonth:
+                            //         int.parse(expiryDate.split('/').first),
+                            //     expYear: int.parse(expiryDate.split('/').last),
+                            //   );
+
+                            //   OrderModel order = Get.arguments[1];
+                            //   controller.updatePaymentMethod(
+                            //       creditCard, order.orderTotalPrice);
+                            //   controller.payWithCard();
+                            // } else {
+                            //   print('invalid!');
+                            // }
                           },
                         ),
                       ],
