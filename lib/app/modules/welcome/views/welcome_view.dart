@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/app_colors.dart';
 import 'package:served_food/app/common/app_widgets/btn_text_white_widget.dart';
@@ -17,7 +18,7 @@ class WelcomeView extends GetView<WelcomeController> {
           WelcomeHeaderWidget(),
           GradientBtnWidget(
             onTap: () {
-              LogOut().logOut();
+              Fluttertoast.showToast(msg: "This feature isn't supported now!");
             },
             width: 208,
             child: BtnTextWhiteWidget(
@@ -32,14 +33,19 @@ class WelcomeView extends GetView<WelcomeController> {
             },
           ),
           SizedBox(height: 16),
-          Text(
-            'Forgot password?',
-            style: TextStyle(
-              fontSize: 18,
-              color: kTextColor,
+          TextButton(
+            onPressed: () {
+              Fluttertoast.showToast(msg: "This feature isn't supported now!");
+            },
+            child: Text(
+              'Forgot password?',
+              style: TextStyle(
+                fontSize: 18,
+                color: kTextColor,
+              ),
             ),
           ),
-          SizedBox(height: 54),
+          SizedBox(height: 40),
           Row(
             children: [
               Spacer(),

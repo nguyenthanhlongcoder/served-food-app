@@ -1,13 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:served_food/app/common/app_styles/index.dart';
 import 'package:served_food/app/modules/report/controllers/report_controller.dart';
 import 'package:served_food/app/modules/report/models/product_ranking_model.dart';
-import 'package:served_food/app/modules/report/models/user_ranking_model.dart';
 import 'package:served_food/app/modules/report/widgets/report_product_ranking_widget.dart';
-import 'package:served_food/app/modules/report/widgets/report_user_ranking_widget.dart';
 
 class ReportProductRankingComponent extends StatelessWidget {
   const ReportProductRankingComponent({
@@ -42,12 +39,10 @@ class ReportProductRankingComponent extends StatelessWidget {
             children: [
               Container(
                 width: 2 * (Get.width - kPadding * 2) / 5,
-                child: Flexible(
-                  child: Text(
-                    'Name',
-                    style:
-                        TextStyle(color: Colors.white, fontSize: kBodyTextSize),
-                  ),
+                child: Text(
+                  'Name',
+                  style:
+                      TextStyle(color: Colors.white, fontSize: kBodyTextSize),
                 ),
               ),
               Container(
@@ -85,19 +80,32 @@ class ReportProductRankingComponent extends StatelessWidget {
           ),
           Obx(() {
             if (controller.lstUserRanking.length != 0) {
-              return Column(
-                children:
-                    List.generate(controller.lstProductRanking.length, (index) {
-                  ProductRankingModel productRanking =
-                      controller.lstProductRanking[index];
-                  return ReportProductRankingWidget(
-                    name: productRanking.name,
-                    qty: productRanking.qty,
-                    totalSale: productRanking.totalSale,
-                    rank: ++index,
-                  );
-                }),
-              );
+              return ListView.builder(
+                  shrinkWrap: true, // use it
+                  itemCount: controller.lstProductRanking.length,
+                  itemBuilder: (context, index) {
+                    ProductRankingModel productRanking =
+                        controller.lstProductRanking[index];
+                    return ReportProductRankingWidget(
+                      name: productRanking.name,
+                      qty: productRanking.qty,
+                      totalSale: productRanking.totalSale,
+                      rank: ++index,
+                    );
+                  });
+              // return Column(
+              //   children:
+              //       List.generate(controller.lstProductRanking.length, (index) {
+              //     ProductRankingModel productRanking =
+              //         controller.lstProductRanking[index];
+              //     return ReportProductRankingWidget(
+              //       name: productRanking.name,
+              //       qty: productRanking.qty,
+              //       totalSale: productRanking.totalSale,
+              //       rank: ++index,
+              //     );
+              //   }),
+              // );
             } else {
               return Center(
                 child: SpinKitFadingFour(

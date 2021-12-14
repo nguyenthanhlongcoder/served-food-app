@@ -65,8 +65,8 @@ class AppPages {
     GetPage(name: AppRoutes.CHECKOUT, page: () => new CheckoutView()),
     GetPage(name: AppRoutes.CREDIT_CARD, page: () => new CreditCardView()),
     GetPage(name: AppRoutes.CASH, page: () => new CashView()),
-    // GetPage(
-    //     name: AppRoutes.CHECKOUT_RESULT, page: () => new CheckoutResultView()),
+    GetPage(
+        name: AppRoutes.CHECKOUT_RESULT, page: () => new CheckoutResultView()),
     // GetPage(name: AppRoutes.TEST, page: () => new MyApp()),
     GetPage(
         name: AppRoutes.PROFILE,

@@ -83,8 +83,9 @@ class TableView extends StatelessWidget {
                             return FocusedMenuHolder(
                               onPressed: () async {
                                 if (data[index]['is_in_use']) {
+                                  var table = data[index]['name'];
                                   Fluttertoast.showToast(
-                                      msg: 'This table is been using.');
+                                      msg: '$table is being used.');
                                 } else {
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
@@ -97,37 +98,43 @@ class TableView extends StatelessWidget {
                               blurSize: 4,
                               menuItems: <FocusedMenuItem>[
                                 FocusedMenuItem(
-                                    title: Text('Mở'),
+                                    title: Text('Open'),
                                     onPressed: () async {
-                                      SharedPreferences pref =
-                                          await SharedPreferences.getInstance();
-                                      pref.remove('carts');
-                                      pref.remove('order_items');
+                                      if (data[index]['is_in_use']) {
+                                        var table = data[index]['name'];
+                                        Fluttertoast.showToast(
+                                            msg: '$table is being used.');
+                                      } else {
+                                        SharedPreferences pref =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        pref.remove('carts');
+                                        pref.remove('order_items');
 
-                                      controller.openTable(data[index]);
+                                        controller.openTable(data[index]);
+                                      }
                                     },
                                     trailingIcon: Icon(
                                       Icons.open_in_new,
                                       color: kBtnColorStart,
                                     )),
                                 FocusedMenuItem(
-                                    title: Text('Thanh Toán'),
+                                    title: Text('Checkout'),
                                     onPressed: () {},
                                     trailingIcon: Icon(
                                       Icons.wallet_giftcard,
                                       color: kBtnColorStart,
                                     )),
                                 FocusedMenuItem(
-                                    title: Text('Hủy'),
-                                    onPressed: () {},
-                                    trailingIcon: Icon(
-                                      Icons.cancel,
-                                      color: kBtnColorStart,
-                                    )),
-                                FocusedMenuItem(
-                                    title: Text('Đặt Lại'),
+                                    title: Text('Reset'),
                                     onPressed: () {
-                                      controller.resetTable(data[index]);
+                                      if (data[index]['is_in_use']) {
+                                        var table = data[index]['name'];
+                                        Fluttertoast.showToast(
+                                            msg: '$table is being used.');
+                                      } else {
+                                        controller.resetTable(data[index]);
+                                      }
                                     },
                                     trailingIcon: Icon(
                                       Icons.restart_alt,
@@ -135,25 +142,84 @@ class TableView extends StatelessWidget {
                                     )),
                                 FocusedMenuItem(
                                     title: Text(
-                                      'Chuyển bàn',
+                                      'Swap',
                                     ),
-                                    onPressed: () {
-                                      TableModel table =
-                                          TableModel.fromJson(data[index]);
-                                      Get.bottomSheet(BottomSheet(
-                                        table: table,
-                                      ));
+                                    onPressed: () async {
+                                      if (data[index]['is_in_use']) {
+                                        var table = data[index]['name'];
+                                        Fluttertoast.showToast(
+                                            msg: '$table is being used.');
+                                      } else {
+                                        TableModel table =
+                                            TableModel.fromJson(data[index]);
+                                        Get.bottomSheet(BottomSheet(
+                                          table: table,
+                                        ));
+                                      }
                                     },
                                     trailingIcon: Icon(Icons.swap_horiz_rounded,
                                         color: kBtnColorStart),
                                     backgroundColor: Colors.white),
                                 FocusedMenuItem(
                                     title: Text(
-                                      'Xóa',
+                                      'Cancel',
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    onPressed: () {},
-                                    trailingIcon: Icon(Icons.delete),
+                                    onPressed: () async {
+                                      if (data[index]['is_in_use']) {
+                                        var table = data[index]['name'];
+                                        Fluttertoast.showToast(
+                                            msg: '$table is being used.');
+                                      } else {
+                                        Get.defaultDialog(
+                                          title: "Confirm Action",
+                                          middleText: "Are you sure to cancel?",
+                                          contentPadding:
+                                              EdgeInsets.all(kPadding / 2),
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Get.back();
+                                              },
+                                              child: Text(
+                                                "Cancel",
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.red,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 6),
+                                                  textStyle: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                controller
+                                                    .cancelOrder(data[index]);
+                                                Get.back();
+                                              },
+                                              child: Text(
+                                                "Confirm",
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.green,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 6),
+                                                  textStyle: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            )
+                                          ],
+                                        );
+                                      }
+                                    },
+                                    trailingIcon: Icon(Icons.cancel),
                                     backgroundColor: Colors.redAccent),
                               ],
                               child: TableItem(

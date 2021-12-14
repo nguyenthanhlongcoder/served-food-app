@@ -300,7 +300,46 @@ class BottomSheet extends StatelessWidget {
             height: kPadding,
           ),
           BtnDeleteWidget(onTap: () {
-            controller.deleteOrderItem();
+            Get.defaultDialog(
+              title: "Confirm Action",
+              middleText: "Are you sure to cancel?",
+              contentPadding: EdgeInsets.all(kPadding / 2),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(
+                    "Cancel",
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      textStyle: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    controller.deleteOrderItem();
+                    Get.back();
+                  },
+                  child: Text(
+                    "Confirm",
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      textStyle: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
+                )
+              ],
+            );
           }, child: Obx(() {
             if (controller.isDataProcessing.value) {
               return Container(

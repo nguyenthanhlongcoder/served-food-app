@@ -145,7 +145,7 @@ class ProductController extends GetxController {
         pref.setString('order_items', encodedOrderItem);
         pref.setString('carts', encodedCartItem);
       }
-      Fluttertoast.showToast(msg: 'Add to table success');
+      Fluttertoast.showToast(msg: 'Add to the cart success');
       Get.back();
     } else {
       isAddToTableLoading.value = false;

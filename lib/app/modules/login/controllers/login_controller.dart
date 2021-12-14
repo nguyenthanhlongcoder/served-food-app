@@ -38,58 +38,68 @@ class LoginController extends GetxController {
   }
 
   void login() async {
-    if (usernameController.text.isEmail) {
-      try {
-        isLoading(true);
-        var response = await new ApiProvider().post(
-            GetRequestUrl.LOGIN,
-            json.encode({
-              'email': usernameController.text,
-              'password': passwordController.text
-            }));
-        if (response['detail'] ==
-            'No active account found with the given credentials') {
+    if (usernameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      if (usernameController.text.isEmail) {
+        try {
+          isLoading(true);
+          var response = await new ApiProvider().post(
+              GetRequestUrl.LOGIN,
+              json.encode({
+                'email': usernameController.text,
+                'password': passwordController.text
+              }));
+          if (response['detail'] ==
+              'No active account found with the given credentials') {
+            isLoading(false);
+            isError(true);
+            Fluttertoast.showToast(
+              msg: 'Email or password is not true',
+              toastLength: Toast.LENGTH_LONG,
+            );
+            usernameController.text = '';
+            passwordController.text = '';
+          }
+          if (response['id'] != null) {
+            isLoading(false);
+            isError(false);
+            String id = response['id'].toString();
+            String expiry = DateTime.now().add(Duration(days: 1)).toString();
+            String token = response['access'].toString();
+            userRepository.persistToken(token);
+            UserProvider().getUserDetail(id).then((response) async {
+              if (response != null) {
+                user.value = UserModel.fromJson(response);
+                UserRepository().setUser(user.value);
+                UserRepository().persistExpiry(expiry);
+                userMethods.addUser(user.value);
+                Get.offNamedUntil(AppRoutes.MAIN, (route) => false);
+
+                Fluttertoast.showToast(
+                  msg: 'Login Success',
+                  toastLength: Toast.LENGTH_LONG,
+                );
+              } else {
+                Fluttertoast.showToast(
+                  msg: response.toString(),
+                  toastLength: Toast.LENGTH_LONG,
+                );
+              }
+            });
+          }
+        } catch (e) {
           isLoading(false);
           isError(true);
           Fluttertoast.showToast(
-            msg: 'Email or password is not true',
+            msg: e.toString(),
             toastLength: Toast.LENGTH_LONG,
           );
           usernameController.text = '';
           passwordController.text = '';
         }
-        if (response['id'] != null) {
-          isLoading(false);
-          isError(false);
-          String id = response['id'].toString();
-          String expiry = DateTime.now().add(Duration(days: 1)).toString();
-          String token = response['access'].toString();
-          userRepository.persistToken(token);
-          UserProvider().getUserDetail(id).then((response) async {
-            if (response != null) {
-              user.value = UserModel.fromJson(response);
-              UserRepository().setUser(user.value);
-              UserRepository().persistExpiry(expiry);
-              userMethods.addUser(user.value);
-              Get.offNamedUntil(AppRoutes.MAIN, (route) => false);
-
-              Fluttertoast.showToast(
-                msg: 'Login Success',
-                toastLength: Toast.LENGTH_LONG,
-              );
-            } else {
-              Fluttertoast.showToast(
-                msg: response.toString(),
-                toastLength: Toast.LENGTH_LONG,
-              );
-            }
-          });
-        }
-      } catch (e) {
-        isLoading(false);
-        isError(true);
+      } else {
         Fluttertoast.showToast(
-          msg: e.toString(),
+          msg: 'Email is not valid',
           toastLength: Toast.LENGTH_LONG,
         );
         usernameController.text = '';
@@ -97,7 +107,7 @@ class LoginController extends GetxController {
       }
     } else {
       Fluttertoast.showToast(
-        msg: 'Email is not valid',
+        msg: 'Please fill up all fields.',
         toastLength: Toast.LENGTH_LONG,
       );
       usernameController.text = '';

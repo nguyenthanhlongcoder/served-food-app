@@ -41,7 +41,7 @@ class OrderController extends GetxController {
         'name': arguments['name'],
         'is_active': arguments['is_active'],
         'is_in_use': false,
-        'status': arguments['status']
+        // 'status': arguments['status']
       });
       TableProvider().updateTable(arguments['id'].toString(), table).then(
           (response) {

@@ -21,7 +21,10 @@ class CashPaymentController extends GetxController {
         OrderProvider().updateOrder(order.id.toString(), body).then((response) {
           if (response['status'] == 'paid') {
             isDataProcessing(false);
-            Get.toNamed(AppRoutes.CHECKOUT_RESULT);
+            // Get.toNamed(AppRoutes.CHECKOUT_RESULT);
+            Get.back();
+            Get.back();
+            Get.back();
           }
         });
       });
